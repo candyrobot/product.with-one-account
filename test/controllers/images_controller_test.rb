@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class ImagesControllerTest < ActionController::TestCase
+class ImagesControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
-    get :index
+    get images_index_url
     assert_response :success
   end
 
