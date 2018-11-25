@@ -7,7 +7,7 @@ window.signup = ->
 	dat.email = $('#component-input .email').val()
 	dat.password = $('#component-input .password').val()
 	return if isInvalid(dat)
-	$.post('/users/', { email: email, password: password })
+	$.post('/users/', dat)
 
 window.signin = ->
 	dat = {}
@@ -16,7 +16,7 @@ window.signin = ->
 	return if isInvalid(dat)
 	console.log(dat.email);
 	console.log(dat.password);
-	# $.post('/users/', { email: email, password: password })
+	$.post('/users/start_session', dat)
 
 isInvalid = (dat)->
 	isEmpty(dat) || !isValidEmail(dat.email)
