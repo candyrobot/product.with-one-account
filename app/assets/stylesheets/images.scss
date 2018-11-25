@@ -27,7 +27,7 @@ button {
 input, button {
   padding: 0 10px;
   line-height: 35px;
-  font-size: 16px;
+  font-size: 15px;
   border-radius: 3px;
   border: none;
 }
@@ -69,7 +69,17 @@ input, button {
   }
 }
 
-#component-signup {
+#component-actions {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  padding: 10px;
+  background-color: rgba(28, 161, 242, .8);
+  text-align: right;
+}
+
+#component-input {
   position: fixed;
   left: 0;
   top: 0;
