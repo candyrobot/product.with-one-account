@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'favorites/create'
+
+  get 'users/create'
+
   get 'images/', to: 'images#list'
   get 'images/index'
   post 'images', to: 'images#create'
