@@ -1,14 +1,33 @@
 <div id="hoge1">
+	<!-- - 頭に "http" から始まっているURLは全て受け付けられます -->
+	<!-- - `data:`と書かれてあるURLは当サービスでは受け付けられません -->
 	<input type="text" placeholder="画像のURL">
-	<span>送信</span>
+	<span onclick="send()">送信</span>
 </div>
 <div id="hoge2">
 </div>
 <script>
-$('#hoge1 span').on('click', function() {
+function send() {
 	var url = $('#hoge1 input').val();
-	$.post('/images/', { url: url });
-});
+	if(isValidUrl(url))
+		$.post('/images/', { url: url });
+}
+
+/**
+ * @param  {[type]}
+ * @return {Boolean}
+ */
+function isValidUrl(url) {
+	return url.indexOf('.jpg') != -1
+	|| url.indexOf('.jpeg') != -1
+	|| url.indexOf('.png') != -1
+	|| url.indexOf('.gif') != -1
+	|| url.indexOf('.JPG') != -1
+	|| url.indexOf('.JPEG') != -1
+	|| url.indexOf('.PNG') != -1
+	|| url.indexOf('.GIF') != -1
+}
+
 $.get('/images/index', function(a) {
 	console.log(a);
 	a.map((dat)=> {
