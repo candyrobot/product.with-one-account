@@ -1,42 +1,74 @@
-<div id="hoge1">
+<div id="component-post">
 	<!-- - 頭に "http" から始まっているURLは全て受け付けられます -->
 	<!-- - `data:`と書かれてあるURLは当サービスでは受け付けられません -->
 	<input type="text" placeholder="画像のURL">
-	<span onclick="send()">送信</span>
+	<button onclick="post()">投稿</button>
+	<script>
+	function post() {
+		var url = $('#component-post input').val();
+		if(isValidUrl(url))
+			$.post('/images/', { url: url });
+	}
+	/**
+	 * @param  {[type]}
+	 * @return {Boolean}
+	 */
+	function isValidUrl(url) {
+		return url.indexOf('.jpg') != -1
+		|| url.indexOf('.jpeg') != -1
+		|| url.indexOf('.png') != -1
+		|| url.indexOf('.gif') != -1
+		|| url.indexOf('.JPG') != -1
+		|| url.indexOf('.JPEG') != -1
+		|| url.indexOf('.PNG') != -1
+		|| url.indexOf('.GIF') != -1
+	}
+	</script>
 </div>
-<div id="hoge2">
-</div>
-<script>
-function send() {
-	var url = $('#hoge1 input').val();
-	if(isValidUrl(url))
-		$.post('/images/', { url: url });
-}
-
-/**
- * @param  {[type]}
- * @return {Boolean}
- */
-function isValidUrl(url) {
-	return url.indexOf('.jpg') != -1
-	|| url.indexOf('.jpeg') != -1
-	|| url.indexOf('.png') != -1
-	|| url.indexOf('.gif') != -1
-	|| url.indexOf('.JPG') != -1
-	|| url.indexOf('.JPEG') != -1
-	|| url.indexOf('.PNG') != -1
-	|| url.indexOf('.GIF') != -1
-}
-
-$.get('/images/index', function(a) {
-	console.log(a);
-	a.map((dat)=> {
-		var html = `
-<div class="outer">
-	<div style="background-image: url(${dat.url})"></div>
-</div>
-		`;
-		$(html).appendTo('#hoge2');
+<div id="component-images">
+	<script>
+	$.get('/images/index', function(a) {
+		console.log(a);
+		a.map((dat)=> {
+			var html = `
+	<div class="outer">
+		<div style="background-image: url(${dat.url})"></div>
+	</div>
+			`;
+			$(html).appendTo('#component-images');
+		});
 	});
-});
-</script>
+	</script>
+</div>
+<div id="component-signup">
+	<!-- <h1>PIC RUSH</h1> -->
+	<input type="text" class="email" placeholder="email">
+	<input type="text" class="password" placeholder="password">
+	<button onclick="signup();">サインアップ</button>
+	<script>
+	function signup() {
+		var email = $('#component-signup .email').val();
+		var password = $('#component-signup .password').val();
+		if(isValidEmail(email))
+			$.post('/users/', { email: email, password: password });
+	}
+	function isValidEmail(email) {
+		return true;
+	}
+	</script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
