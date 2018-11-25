@@ -1,3 +1,65 @@
 // Place all the styles related to the images controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+*, *:before, *:after {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+         -o-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  margin-top: 53px;
+}
+
+#hoge1 {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  padding: 10px;
+  background-color: #1ca1f2;
+}
+
+#hoge1 > input {
+  background-color: white;
+  border: none;
+  padding: 10px;
+  width: calc( 100% - 115px );
+}
+
+#hoge1 > span {
+  display: inline-block;
+  width: 70px;
+  line-height: 33px;
+  text-align: center;
+  background-color: #70c9ff;
+  color: white;
+  vertical-align: middle;
+}
+
+#hoge2 {
+  padding: 5px;
+}
+#hoge2 > .outer{
+  float: left;
+  width: 50%;
+  padding: 5px;
+}
+#hoge2 > .outer > div {
+  height: 0;
+  padding-top: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+
+
+
+
+
