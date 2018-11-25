@@ -1,0 +1,23 @@
+<div id="hoge1">
+	<input type="text" placeholder="画像のURL">
+	<span>送信</span>
+</div>
+<div id="hoge2">
+</div>
+<script>
+$('#hoge1 span').on('click', function() {
+	var url = $('#hoge1 input').val();
+	$.post('/images/', { url: url });
+});
+$.get('/images/index', function(a) {
+	console.log(a);
+	a.map((dat)=> {
+		var html = `
+<div class="outer">
+	<div style="background-image: url(${dat.url})"></div>
+</div>
+		`;
+		$(html).appendTo('#hoge2');
+	});
+});
+</script>
