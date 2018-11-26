@@ -4,7 +4,15 @@ class ImagesController < ApplicationController
   end
 
   def index
-    render :json => Image.all
+    if params.key?(:related) && params.key?(:imageID)
+      render json: Favorite.where(imageID: params[:imageID]).map do |dat|
+        Favorites.where(userID: dat.userID).map do |dat|
+          dat.imageID
+        end
+      end
+    else
+      render json: Image.all
+    end
   end
 
   def create

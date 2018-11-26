@@ -6,7 +6,8 @@ Rails.application.routes.draw do
   post 'favorites', to: 'favorites#create'
 
   post 'users', to: 'users#create'
-  post 'users/start_session', to: 'users#start_session'
+  post 'users/login', to: 'users#login'
+  post 'users/logout', to: 'users#logout'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
