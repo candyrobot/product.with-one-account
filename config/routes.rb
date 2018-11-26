@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get 'images/', to: 'images#list'
+  get 'application/', to: 'application#index'
+
+  get 'images/', to: 'images#view'
   get 'images/index'
   post 'images', to: 'images#create'
 

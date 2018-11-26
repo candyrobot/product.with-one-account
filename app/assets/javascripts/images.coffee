@@ -2,6 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+window.initializeApp = ->
+	$.get('/application', (dat)->
+		console.log(dat)
+		appendImages dat.images
+		if dat.session.userID
+			$('#component-actions .login').hide();
+	)
+
 window.signup = ->
 	dat = {}
 	dat.email = $('.component-input .email').val()
@@ -9,14 +17,17 @@ window.signup = ->
 	return if isInvalid(dat)
 	$.post('/users/', dat)
 
+window.logout = ->
+	$.post('/users/logout')
+	setTimeout 'location.reload()', 1000
+
 window.login = ->
 	dat = {}
 	dat.email = 'findwkwk@gmail.com'#$('.component-input .email').val()
 	dat.password = 'I12rk040'#$('.component-input .password').val()
 	return if isInvalid(dat)
-	console.log(dat.email);
-	console.log(dat.password);
 	$.post('/users/login', dat)
+	setTimeout 'location.reload()', 1000
 
 isInvalid = (dat)->
 	isEmpty(dat) || !isValidEmail(dat.email)
@@ -29,20 +40,17 @@ isEmpty = (dat)->
 
 window.displayInput = ->
 	$('.component-input button').text('ログイン');
-	$('.component-input button').attr('onclick', 'signin();');
+	$('.component-input button').attr('onclick', 'login();');
 	$('.component-input').show();
 
-window.appendImages = ->
-	$.get('/images/index', (a)->
-		console.log(a);
-		a.map((dat)->
-			html = """
-			<div class="outer">
-				<div style="background-image: url(#{dat.url})"></div>
-			</div>
-			""";
-			$(html).appendTo('#component-images');
-		);
+appendImages = (images)->
+	images.map((dat)->
+		html = """
+		<div class="outer">
+			<div style="background-image: url(#{dat.url})"></div>
+		</div>
+		""";
+		$(html).appendTo('#component-images');
 	);
 
 post = ->

@@ -9,12 +9,14 @@ class UsersController < ApplicationController
   end
 
   def login
+    logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> login"
+    logger.debug session[:user_id]
     if params.key?(:email) || params.key?(:password)
       user = User.where(email: params[:email], password: params[:password])
-      logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
       if user.length != 0
+        session[:user_id] = user[0].id
         logger.debug "🌟session start"
-        session[:user_id] = params[:id]
+        logger.debug session[:user_id]
       else
         session[:user_id] = nil
       end
@@ -22,7 +24,9 @@ class UsersController < ApplicationController
   end
 
   def logout
+    logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> logout"
     session[:user_id] = nil
+    logger.debug session[:user_id]
   end
 
 end

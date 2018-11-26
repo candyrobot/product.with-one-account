@@ -1,3 +1,7 @@
+<script>
+	initializeApp()
+</script>
+
 <div id="component-post">
 	<!-- - 頭に "http" から始まっているURLは全て受け付けられます -->
 	<!-- - `data:`と書かれてあるURLは当サービスでは受け付けられません -->
@@ -5,18 +9,12 @@
 	<button onclick="post()">投稿</button>
 </div>
 
-<div id="component-images">
-	<script>
-	appendImages();
-	</script>
-</div>
+<div id="component-images"></div>
 
 <div id="component-actions">
 	<button>新着</button>
 	<button>マイページ</button>
-	<button onclick="displayInput()">ログイン</button>
-	<script>
-	</script>
+	<button class="login" onclick="displayInput()">ログイン</button>
 </div>
 
 <div class="component-input" style="display: none;">
@@ -26,10 +24,8 @@
 </div>
 
 <div class="component-input" style="display: none;">
-	<form action="/users/start_session" method="post">
-		<input type="text" class="email" name="email" placeholder="email">
-		<input type="text" class="password" name="password" placeholder="password">
-		<button onclick="">ログイン</button>
-	</form>
+	<input type="text" class="email" name="email" placeholder="email">
+	<input type="text" class="password" name="password" placeholder="password">
+	<button onclick="">ログイン</button>
 </div>
 
