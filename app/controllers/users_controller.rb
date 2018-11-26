@@ -9,20 +9,23 @@ class UsersController < ApplicationController
   end
 
   def start_session
-    if session[:user_name]
-      logger.debug "#{session[:user_name]}でログインしています。"
+    logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+    logger.debug params[:email]
+    if session[:user_email]
+      logger.debug "#{session[:user_email]}でログインしています。"
     else
       logger.debug "ログインしていない。"
     end
 
-    if params.key?(:name) || params.key?(:password)
-      user = User.where(name: params[:name], password: params[:password])
-      # if user && user.authenticate(params[:password])
+    if params.key?(:email) || params.key?(:password)
+      user = User.where(email: params[:email], password: params[:password])
+      logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+      logger.debug user.length
       if user.length != 0
         logger.debug "ある"
-        session[:user_name] = params[:name]
+        session[:user_email] = params[:email]
       else
-        session[:user_name] = nil
+        session[:user_email] = nil
       end
     end
   end

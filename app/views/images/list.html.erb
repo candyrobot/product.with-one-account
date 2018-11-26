@@ -4,11 +4,13 @@
 	<input type="text" placeholder="画像のURL">
 	<button onclick="post()">投稿</button>
 </div>
+
 <div id="component-images">
 	<script>
 	appendImages();
 	</script>
 </div>
+
 <div id="component-actions">
 	<button>新着</button>
 	<button>マイページ</button>
@@ -17,8 +19,17 @@
 	</script>
 </div>
 
-<div id="component-input" style="display: none;">
+<div class="component-input" style="display: none;">
 	<input type="text" class="email" placeholder="email">
 	<input type="text" class="password" placeholder="password">
-	<button onclick="">サインアップ</button>
+	<button onclick="window.signup()">サインアップ</button>
 </div>
+
+<div class="component-input" style="display: none;">
+	<form action="/users/start_session" method="post">
+		<input type="text" class="email" name="email" placeholder="email">
+		<input type="text" class="password" name="password" placeholder="password">
+		<button onclick="">ログイン</button>
+	</form>
+</div>
+

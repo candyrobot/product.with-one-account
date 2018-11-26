@@ -4,15 +4,15 @@
 
 window.signup = ->
 	dat = {}
-	dat.email = $('#component-input .email').val()
-	dat.password = $('#component-input .password').val()
+	dat.email = $('.component-input .email').val()
+	dat.password = $('.component-input .password').val()
 	return if isInvalid(dat)
 	$.post('/users/', dat)
 
 window.signin = ->
 	dat = {}
-	dat.email = $('#component-input .email').val()
-	dat.password = $('#component-input .password').val()
+	dat.email = 'findwkwk@gmail.com'#$('.component-input .email').val()
+	dat.password = 'I12rk040'#$('.component-input .password').val()
 	return if isInvalid(dat)
 	console.log(dat.email);
 	console.log(dat.password);
@@ -28,9 +28,9 @@ isEmpty = (dat)->
 	false
 
 window.displayInput = ->
-	$('#component-input button').text('ログイン');
-	$('#component-input button').attr('onclick', 'signin();');
-	$('#component-input').show();
+	$('.component-input button').text('ログイン');
+	$('.component-input button').attr('onclick', 'signin();');
+	$('.component-input').show();
 
 window.appendImages = ->
 	$.get('/images/index', (a)->
