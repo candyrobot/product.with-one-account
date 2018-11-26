@@ -3,17 +3,20 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 window.initializeApp = ->
-	$.get('/application', (dat)->
+	$.get('/application'+location.search, (dat)->
 		console.log(dat)
-		appendImages dat.images
+		if dat.images.length == 1
+			appendImage(dat.images[0])
+		else
+			appendImages dat.images
 		if dat.session.userID
 			$('#component-actions .login').hide();
 	)
 
 window.signup = ->
 	dat = {}
-	dat.email = $('.component-input .email').val()
-	dat.password = $('.component-input .password').val()
+	dat.email = $('#component-signup .email').val()
+	dat.password = $('#component-signup .password').val()
 	return if isInvalid(dat)
 	$.post('/users/', dat)
 
@@ -23,8 +26,8 @@ window.logout = ->
 
 window.login = ->
 	dat = {}
-	dat.email = 'findwkwk@gmail.com'#$('.component-input .email').val()
-	dat.password = 'I12rk040'#$('.component-input .password').val()
+	dat.email = $('#component-login .email').val()
+	dat.password = 'I12rk040'#$('#component-login .password').val()
 	return if isInvalid(dat)
 	$.post('/users/login', dat)
 	setTimeout 'location.reload()', 1000
@@ -38,22 +41,30 @@ isValidEmail = (email)->
 isEmpty = (dat)->
 	false
 
-window.displayInput = ->
-	$('.component-input button').text('ログイン');
-	$('.component-input button').attr('onclick', 'login();');
-	$('.component-input').show();
+window.toggleFav = (el)->
+	$(el).toggleClass('true')
+	id = $('.fluid').attr('data-imageID');
+	$.post('/favorites', { imageID: id });
 
 appendImages = (images)->
 	images.map((dat)->
 		html = """
-		<div class="outer">
+		<a class="outer" href="/images?imageID=#{dat.id}">
 			<div style="background-image: url(#{dat.url})"></div>
-		</div>
+		</a>
 		""";
 		$(html).appendTo('#component-images');
 	);
 
-post = ->
+appendImage = (image)->
+	html = """
+	<div class="fluid" data-imageID="#{image.id}">
+		<img src="#{image.url}">
+	</div>
+	""";
+	$(html).appendTo('#component-images');
+
+window.post = ->
 	url = $('#component-post input').val();
 	if(isValidUrl(url))
 		$.post('/images/', { url: url });

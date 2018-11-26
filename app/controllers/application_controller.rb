@@ -2,10 +2,15 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   def index
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> app"
-    logger.debug session[:user_id]
+
+    if params.key?(:imageID)
+      images = Image.where(id: params[:imageID])
+    else
+      images = Image.all
+    end
 
     render json: {
-      images: Image.all,
+      images: images,
       session: {
         userID: session[:user_id]
       }

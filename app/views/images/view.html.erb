@@ -12,20 +12,26 @@
 <div id="component-images"></div>
 
 <div id="component-actions">
+	<button class="signup" onclick="$('#component-signup').show()">登録</button>
 	<button>新着</button>
 	<button>マイページ</button>
-	<button class="login" onclick="displayInput()">ログイン</button>
+	<button class="login" onclick="$('#component-login').show()">ログイン</button>
 </div>
 
-<div class="component-input" style="display: none;">
+<div id="component-fav" class="" onclick="toggleFav(this)">
+	<span>♡</span>
+	<span>♥</span>
+</div>
+
+<div id="component-signup" class="component-input" style="display: none;">
 	<input type="text" class="email" placeholder="email">
 	<input type="text" class="password" placeholder="password">
 	<button onclick="window.signup()">サインアップ</button>
 </div>
 
-<div class="component-input" style="display: none;">
+<div id="component-login" class="component-input" style="display: none;">
 	<input type="text" class="email" name="email" placeholder="email">
 	<input type="text" class="password" name="password" placeholder="password">
-	<button onclick="">ログイン</button>
+	<button onclick="login()">ログイン</button>
 </div>
 
