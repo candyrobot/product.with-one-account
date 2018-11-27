@@ -1,0 +1,43 @@
+<div class="layer-1">
+	<div id="component-images"></div>
+</div>
+
+<div class="component-layer layer-2">
+	<div id="component-post">
+		<!-- - 頭に "http" から始まっているURLは全て受け付けられます -->
+		<!-- - `data:`と書かれてあるURLは当サービスでは受け付けられません -->
+		<input type="text" placeholder="画像のURL">
+		<button onclick="post()">投稿</button>
+	</div>
+	<div class="frombottom">
+		<div class="fav-area"></div>
+		<div class="area-recommendation" style="display: none">
+				<h4>関連</h4>
+				<div class="component-images-horizontal"></div>
+		</div>
+		<div id="component-actions">
+			<button class="signup" onclick="$('#component-signup').show()">登録</button>
+			<button>新着</button>
+			<button>マイページ</button>
+			<button class="login" onclick="$('#component-login').show()">ログイン</button>
+		</div>
+	</div>
+</div>
+
+<div class="component-layer">
+	<div id="component-signup" class="component-input" style="display: none;">
+		<input type="text" class="email" placeholder="email">
+		<input type="text" class="password" placeholder="password">
+		<button onclick="signup()">サインアップ</button>
+	</div>
+
+	<div id="component-login" class="component-input" style="display: none;">
+		<input type="text" class="email" name="email" placeholder="email">
+		<input type="text" class="password" name="password" placeholder="password">
+		<button onclick="login()">ログイン</button>
+	</div>
+</div>
+
+<script>
+	initializeApp()
+</script>
