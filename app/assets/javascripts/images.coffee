@@ -9,6 +9,9 @@ window.initializeApp = ->
 		if dat.session.userID
 			$('#component-actions .login').hide()
 			$('#component-actions .signup').hide()
+		else
+			$('#component-actions .mypage').hide()
+
 		if dat.images.length == 1
 			renderImage(dat.images[0])
 		else
@@ -148,6 +151,7 @@ window.post = ->
 	url = $('#component-post input').val();
 	if(isValidUrl(url))
 		$.post('/images/', { url: url });
+		setTimeout 'location.reload()', 1000
 
 isValidUrl = (url)->
 	url.indexOf('.jpg') != -1 ||

@@ -7,14 +7,14 @@ class ImagesController < ApplicationController
         end
       end)
     else
-      render json: Image.all
+      render json: Image.all.reverse_order
     end
   end
 
   def create
     # 重複チェック
-    # image = Image.where url: params[:url]
-    # return if image.length != 0
+    image = Image.where url: params[:url]
+    return if image.length != 0
 
     image = Image.new({url: params[:url] })
     image.save

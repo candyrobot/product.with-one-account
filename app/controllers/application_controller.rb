@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
     if params.key?(:imageID)
       images = Image.where(id: params[:imageID])
     else
-      images = Image.all
+      images = Image.all.reverse_order
     end
 
     render json: {
