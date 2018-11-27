@@ -71,7 +71,7 @@ renderRecommendation = (data)->
 		prev + (if image.id == parseInt $('.fluid').attr('data-imageID') then "" else
 			"""
 			<a
-			href="#"
+			href="/images?imageID=#{image.id}"
 			style="background-image: url(#{image.url})"></a>
 			""")
 	, ""
