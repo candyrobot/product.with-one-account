@@ -13,7 +13,8 @@ class ApplicationController < ActionController::Base
       images: images,
       favorites: Favorite.where(userID: session[:user_id]),
       session: {
-        userID: session[:user_id]
+        userID: session[:user_id],
+        email: User.find(session[:user_id]).email
       }
     }
   end

@@ -24,6 +24,8 @@ window.initializeApp = ->
 					.done renderRecommendation
 				else
 					deleteFav(imageID)
+		$('#component-logout h1').text(window.dat.session.userID)
+		$('#component-logout h5').text(window.dat.session.email)
 	)
 
 deleteFav = (imageID)->
