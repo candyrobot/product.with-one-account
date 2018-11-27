@@ -6,11 +6,16 @@ window.initializeApp = ->
 	$.get('/application'+location.search, (dat)->
 		console.log(dat)
 		if dat.images.length == 1
-			appendImage(dat.images[0])
+			renderImage(dat.images[0])
 		else
-			appendImages dat.images
+			renderImages dat.images
 		if dat.session.userID
 			$('#component-actions .login').hide();
+		if location.search.indexOf('imageID') != -1
+			$('.fav-area').html getHtmlFav({
+				imageID: dat.images[0].id,
+				do: toggleFav
+			})
 	)
 
 deleteFav = (imageID)->
@@ -53,22 +58,22 @@ isValidEmail = (email)->
 isEmpty = (dat)->
 	false
 
-# hoge = ->
+# oooooooooooo = ->
 # 	$.get('/favorites')
 # 	.done (data)->
 # 		console.log(data)
 
 window.toggleFav = (el)->
 	$(el).toggleClass('true')
-	id = $('.fluid').attr('data-imageID');
-	if $(el).is('.true')
-		$.post('/favorites', { imageID: id });
-	else
-		deleteFav(id)
-	$.get('/images/list', { related: true, imageID: id })
-	.done((data)->
-		renderRecommendation(data)
-	)
+	# id = $('.fluid').attr('data-imageID');
+	# if $(el).is('.true')
+	# 	$.post('/favorites', { imageID: id });
+	# else
+	# 	deleteFav(id)
+	# $.get('/images/list', { related: true, imageID: id })
+	# .done((data)->
+	# 	renderRecommendation(data)
+	# )
 
 renderRecommendation = (data)->
 	html = sortByFrequency(data.serialize()).reduce (prev, image)->
@@ -98,30 +103,46 @@ Array.prototype.serialize = ()->
 		pre
 	,[])
 
-appendImages = (images)->
+window.hoge = (el)->
+	dat = $(el).data('data')
+	console.log(dat)
+	dat.do()
+
+getHtmlFav = (data)->
+	console.log(data)
+	"""
+	<div class="component-fav" onclick="hoge(this)" data-data='#{JSON.stringify data}'>
+		<span>♡</span>
+		<span>♥</span>
+	</div>
+	"""
+
+renderImages = (images)->
 	html = images.reduce (prev, dat)->
+		s = getHtmlFav({
+			imageID: dat.id,
+			do: ()->
+				toggleFav
+		});
 		prev + """
 		<div class="outer">
 			<a
 			class="inner" href="/images?imageID=#{dat.id}"
 			style="background-image: url(#{dat.url})">
 			</a>
-			<div class="component-fav" onclick="toggleFav(this)">
-				<span>♡</span>
-				<span>♥</span>
-			</div>
+			#{s}
 		</div>
 		""";
 	, ""
 	$('#component-images').html(html)
 
-appendImage = (image)->
+renderImage = (image)->
 	html = """
 	<div class="fluid" data-imageID="#{image.id}">
 		<img src="#{image.url}">
 	</div>
 	""";
-	$(html).appendTo('#component-images');
+	$('#component-images').html(html);
 
 window.post = ->
 	url = $('#component-post input').val();

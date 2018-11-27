@@ -4,10 +4,6 @@
 
 -->
 
-<script>
-	initializeApp()
-</script>
-
 <div>
 	<div id="component-images"></div>
 	<div class="component-images-horizontal" style="display: none"></div>
@@ -21,10 +17,7 @@
 		<button onclick="post()">投稿</button>
 	</div>
 	<div class="frombottom">
-		<div class="component-fav" onclick="toggleFav(this)">
-			<span>♡</span>
-			<span>♥</span>
-		</div>
+		<div class="fav-area"></div>
 		<div id="component-actions">
 			<button class="signup" onclick="$('#component-signup').show()">登録</button>
 			<button>新着</button>
@@ -47,3 +40,7 @@
 		<button onclick="login()">ログイン</button>
 	</div>
 </div>
+
+<script>
+	initializeApp()
+</script>
