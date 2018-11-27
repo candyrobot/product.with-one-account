@@ -1,11 +1,11 @@
 class ImagesController < ApplicationController
   def index
     if params.key?(:related) && params.key?(:imageID)
-      render json: Favorite.where(imageID: params[:imageID]).map do |dat|
-        Favorites.where(userID: dat.userID).map do |dat|
-          dat.imageID
+      render json: (Favorite.where(imageID: params[:imageID]).map do |dat|
+        Favorite.where(userID: dat.userID).map do |dat|
+          dat
         end
-      end
+      end)
     else
       render json: Image.all
     end

@@ -19,15 +19,16 @@ window.signup = ->
 	dat.password = $('#component-signup .password').val()
 	return if isInvalid(dat)
 	$.post('/users/', dat)
+	# TODO sessionがうまく飛ばない 連続postはやはり厳しいか
+	login(dat)
 
 window.logout = ->
 	$.post('/users/logout')
 	setTimeout 'location.reload()', 1000
 
-window.login = ->
-	dat = {}
-	dat.email = $('#component-login .email').val()
-	dat.password = 'I12rk040'#$('#component-login .password').val()
+window.login = (dat = {})->
+	dat.email = dat.email || $('#component-login .email').val()
+	dat.password = dat.password || $('#component-login .password').val()
 	return if isInvalid(dat)
 	$.post('/users/login', dat)
 	setTimeout 'location.reload()', 1000
@@ -44,7 +45,30 @@ isEmpty = (dat)->
 window.toggleFav = (el)->
 	$(el).toggleClass('true')
 	id = $('.fluid').attr('data-imageID');
-	$.post('/favorites', { imageID: id });
+	# $.post('/favorites', { imageID: id });
+	$.get('/images/index', { related: true, imageID: id })
+	.done((data)->
+		console.log( sortByFrequency(data.serialize()) );
+	)
+
+sortByFrequency = (array) ->
+	frequency = {}
+	array.forEach (v) ->
+		frequency[v.imageID] = 0
+	uniques = array.filter((v) ->
+		++frequency[v.imageID] == 1
+	)
+	uniques.sort (a, b) ->
+		frequency[b.imageID] - frequency[a.imageID]
+
+Array.prototype.removeDuplicate = ()->
+	Array.from(new Set(this))
+
+Array.prototype.serialize = ()->
+	this.reduce((pre,current)->
+		pre.push.apply(pre, current);
+		pre
+	,[])
 
 appendImages = (images)->
 	images.map((dat)->

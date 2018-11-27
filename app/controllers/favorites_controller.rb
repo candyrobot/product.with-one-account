@@ -5,7 +5,7 @@ class FavoritesController < ApplicationController
     return if !session[:user_id] || !params.key?(:imageID)
 
     # 重複チェック
-    favorite = Favorite.where imageID: params[:imageID]
+    favorite = Favorite.where imageID: params[:imageID], userID: session[:user_id]
     return if favorite.length != 0
 
     favorite = Favorite.new({imageID: params[:imageID], userID: session[:user_id] })
