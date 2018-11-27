@@ -68,9 +68,13 @@ isValidEmail = (email)->
 isEmpty = (dat)->
 	false
 
-renderRecommendation = (data)->
-	html = sortByFrequency(data.serialize()).reduce (prev, image)->
-		prev + (if image.id == parseInt $('.fluid').attr('data-imageID') then "" else
+isShouldNotRender = (image)->
+	image.id == parseInt($('.fluid').attr('data-imageID')) ||
+	window.dat.favorites.filter((fav)-> parseInt(fav.imageID) == image.id).length
+
+renderRecommendation = (images)->
+	html = sortByFrequency(images.serialize()).reduce (prev, image)->
+		prev + (if isShouldNotRender(image) then "" else
 			"""
 			<a
 			href="/images?imageID=#{image.id}"

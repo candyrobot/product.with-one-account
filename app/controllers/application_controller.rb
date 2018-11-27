@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
       favorites: Favorite.where(userID: session[:user_id]),
       session: {
         userID: session[:user_id],
-        email: User.find(session[:user_id]).email
+        email: session[:user_id] && User.find(session[:user_id]).email
       }
     }
   end
