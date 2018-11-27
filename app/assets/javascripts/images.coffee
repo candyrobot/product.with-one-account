@@ -6,12 +6,13 @@ window.initializeApp = ->
 	$.get('/application'+location.search, (dat)->
 		console.log(dat)
 		window.dat = dat
+		if dat.session.userID
+			$('#component-actions .login').hide()
+			$('#component-actions .signup').hide()
 		if dat.images.length == 1
 			renderImage(dat.images[0])
 		else
 			renderImages()
-		if dat.session.userID
-			$('#component-actions .login').hide();
 		if location.search.indexOf('imageID') != -1
 			imageID = dat.images[0].id
 			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
