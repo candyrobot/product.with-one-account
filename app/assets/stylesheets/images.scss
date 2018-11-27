@@ -99,6 +99,11 @@ input, button {
     bottom: 8px;
     font-size: 25px;
   }
+  > .fluid {
+    display: flex;
+    height: calc( 100vh - 150px );
+    align-items: center;
+  }
   > .fluid > img {
     display: block;
     width: 100%;
@@ -167,6 +172,8 @@ input, button {
 
 .component-images-horizontal {
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
   padding: 5px;
   white-space: nowrap;
   > a {
