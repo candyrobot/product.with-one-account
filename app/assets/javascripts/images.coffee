@@ -13,6 +13,17 @@ window.initializeApp = ->
 			$('#component-actions .login').hide();
 	)
 
+deleteFav = (imageID)->
+	$.ajax({
+		type:'DELETE',
+		url: '/favorites'
+		data: {
+			imageID: imageID
+		}
+	})
+	.done (a)->
+		console.log(a)
+
 window.signup = ->
 	dat = {}
 	dat.email = $('#component-signup .email').val()
@@ -42,19 +53,31 @@ isValidEmail = (email)->
 isEmpty = (dat)->
 	false
 
+# hoge = ->
+# 	$.get('/favorites')
+# 	.done (data)->
+# 		console.log(data)
+
 window.toggleFav = (el)->
 	$(el).toggleClass('true')
 	id = $('.fluid').attr('data-imageID');
-	# $.post('/favorites', { imageID: id });
-	$.get('/images/index', { related: true, imageID: id })
+	if $(el).is('.true')
+		$.post('/favorites', { imageID: id });
+	else
+		deleteFav(id)
+	$.get('/images/list', { related: true, imageID: id })
 	.done((data)->
-		sortByFrequency(data.serialize()).forEach (image)->
-			return if image.id == parseInt $('.fluid').attr('data-imageID')
-			$('.component-images-horizontal').append("""
+		renderRecommendation(data)
+	)
+
+renderRecommendation = (data)->
+	html = sortByFrequency(data.serialize()).reduce (prev, image)->
+		prev + (if image.id == parseInt $('.fluid').attr('data-imageID') then "" else
+			"""
 			<div style="background-image: url(#{image.url})"></div>
 			""")
-			.show()
-	)
+	, ""
+	$('.component-images-horizontal').html(html).show()
 
 sortByFrequency = (array) ->
 	frequency = {}
@@ -76,14 +99,14 @@ Array.prototype.serialize = ()->
 	,[])
 
 appendImages = (images)->
-	images.map((dat)->
-		html = """
+	html = images.reduce (prev, dat)->
+		prev + """
 		<a class="outer" href="/images?imageID=#{dat.id}">
 			<div style="background-image: url(#{dat.url})"></div>
 		</a>
 		""";
-		$(html).appendTo('#component-images');
-	);
+	, ""
+	$('#component-images').html(html)
 
 appendImage = (image)->
 	html = """

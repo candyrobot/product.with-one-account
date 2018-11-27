@@ -1,5 +1,5 @@
 class ImagesController < ApplicationController
-  def index
+  def list
     if params.key?(:related) && params.key?(:imageID)
       render json: (Favorite.where(imageID: params[:imageID]).map do |dat|
         Favorite.where(userID: dat.userID).map do |dat|

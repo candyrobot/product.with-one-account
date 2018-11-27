@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   get 'application/', to: 'application#index'
 
   get 'images/', to: 'images#view'
-  get 'images/index'
+  get 'images/list'
   post 'images', to: 'images#create'
 
   post 'favorites', to: 'favorites#create'
+  get 'favorites', to: 'favorites#list'
+  delete 'favorites', to: 'favorites#destroy'
 
   post 'users', to: 'users#create'
   post 'users/login', to: 'users#login'
