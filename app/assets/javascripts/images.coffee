@@ -101,9 +101,16 @@ Array.prototype.serialize = ()->
 appendImages = (images)->
 	html = images.reduce (prev, dat)->
 		prev + """
-		<a class="outer" href="/images?imageID=#{dat.id}">
-			<div style="background-image: url(#{dat.url})"></div>
-		</a>
+		<div class="outer">
+			<a
+			class="inner" href="/images?imageID=#{dat.id}"
+			style="background-image: url(#{dat.url})">
+			</a>
+			<div class="component-fav" onclick="toggleFav(this)">
+				<span>♡</span>
+				<span>♥</span>
+			</div>
+		</div>
 		""";
 	, ""
 	$('#component-images').html(html)

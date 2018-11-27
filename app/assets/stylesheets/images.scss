@@ -32,11 +32,33 @@ input, button {
   border: none;
 }
 
-#component-post {
+.component-layer {
   position: fixed;
   left: 0;
-  top: 0;
   width: 100%;
+  top: 0;
+  height: 100%;
+  pointer-events: none;
+  *:not(.frombottom) {
+    pointer-events: initial;
+  }
+  > .frombottom {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    * {
+      pointer-events: initial;
+    }
+  }
+}
+
+#component-post {
   padding: 10px;
   background-color: #e6e6e6;
   > input {
@@ -58,17 +80,24 @@ input, button {
 
 #component-images {
   padding: 5px;
-  > .outer{
-    display: block;
+  > .outer {
+    position: relative;
     float: left;
     width: 50%;
     padding: 5px;
   }
-  > .outer > div {
+  > .outer > .inner {
+    display: block;
     height: 0;
     padding-top: 100%;
     background-size: cover;
     background-position: center;
+  }
+  > .outer > .component-fav {
+    position: absolute;
+    right: 11px;
+    bottom: 8px;
+    font-size: 25px;
   }
   > .fluid > img {
     display: block;
@@ -77,19 +106,12 @@ input, button {
 }
 
 #component-actions {
-  position: fixed;
-  left: 0;
-  width: 100%;
-  bottom: 0;
   padding: 10px;
   background-color: rgba(28, 161, 242, .8);
   text-align: right;
 }
 
 .component-input {
-  position: fixed;
-  left: 0;
-  top: 0;
   width: 100%;
   height: 100%;
   padding: 40vh 10px 0;
@@ -107,20 +129,10 @@ input, button {
   }
 }
 
-#component-fav {
-  position: fixed;
-  right: 10px;
-  bottom: 70px;
-  bottom: 170px;
-  width: 55px;
-  height: 55px;
-  border-radius: 100%;
-  background-color: white;
-  text-align: center;
-  line-height: 58px;
-  font-size: 25px;
+.component-fav {
   color: #888;
-  box-shadow: 0 2px 10px rgba(0,0,0,.4);
+  text-align: center;
+  border-radius: 100%;
   span:nth-child(2) {
     display: none;
   }
@@ -133,6 +145,16 @@ input, button {
       display: block;
     }
   }
+}
+
+.layer-2 > .frombottom > .component-fav {
+  margin: 0 10px 10px auto;
+  width: 55px;
+  height: 55px;
+  background-color: white;
+  line-height: 58px;
+  font-size: 25px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.4);
 }
 
 .component-images-horizontal {
