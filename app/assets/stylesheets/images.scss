@@ -186,7 +186,13 @@ input, button {
   }
 }
 
-
+#component-logout {
+  color: white;
+  text-align: center;
+  > h1 {
+    margin-bottom: -20px;
+  }
+}
 
 
 
