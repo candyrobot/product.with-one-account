@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get '/', to: redirect('/images')
+
   get 'application/', to: 'application#index'
 
   get 'images/', to: 'images#view'
