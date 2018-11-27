@@ -3,7 +3,7 @@ class ImagesController < ApplicationController
     if params.key?(:related) && params.key?(:imageID)
       render json: (Favorite.where(imageID: params[:imageID]).map do |dat|
         Favorite.where(userID: dat.userID).map do |dat|
-          dat
+          Image.find(dat.imageID)
         end
       end)
     else

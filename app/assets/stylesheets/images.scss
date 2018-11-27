@@ -134,7 +134,23 @@ input, button {
   }
 }
 
-
+.component-images-horizontal {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  bottom: 55px;
+  height: 100px;
+  overflow: auto;
+  background-color: #000;
+  white-space: nowrap;
+  > div {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+  }
+}
 
 
 

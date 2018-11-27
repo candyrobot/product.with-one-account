@@ -48,18 +48,23 @@ window.toggleFav = (el)->
 	# $.post('/favorites', { imageID: id });
 	$.get('/images/index', { related: true, imageID: id })
 	.done((data)->
-		console.log( sortByFrequency(data.serialize()) );
+		sortByFrequency(data.serialize()).forEach (image)->
+			return if image.id == parseInt $('.fluid').attr('data-imageID')
+			$('.component-images-horizontal').append("""
+			<div style="background-image: url(#{image.url})"></div>
+			""")
+			.show()
 	)
 
 sortByFrequency = (array) ->
 	frequency = {}
 	array.forEach (v) ->
-		frequency[v.imageID] = 0
+		frequency[v.id] = 0
 	uniques = array.filter((v) ->
-		++frequency[v.imageID] == 1
+		++frequency[v.id] == 1
 	)
 	uniques.sort (a, b) ->
-		frequency[b.imageID] - frequency[a.imageID]
+		frequency[b.id] - frequency[a.id]
 
 Array.prototype.removeDuplicate = ()->
 	Array.from(new Set(this))
