@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
     render json: {
       images: images,
-      favorite: (Favorite.where userID: session[:user_id]),
+      favorites: Favorite.where(userID: session[:user_id]),
       session: {
         userID: session[:user_id]
       }

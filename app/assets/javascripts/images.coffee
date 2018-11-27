@@ -5,17 +5,25 @@
 window.initializeApp = ->
 	$.get('/application'+location.search, (dat)->
 		console.log(dat)
+		window.dat = dat
 		if dat.images.length == 1
 			renderImage(dat.images[0])
 		else
-			renderImages dat.images
+			renderImages()
 		if dat.session.userID
 			$('#component-actions .login').hide();
 		if location.search.indexOf('imageID') != -1
-			$('.fav-area').html getHtmlFav({
-				imageID: dat.images[0].id,
-				do: toggleFav
-			})
+			imageID = dat.images[0].id
+			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
+			$('.fav-area').html(getHtmlFav(b))
+			.find('.component-fav').on 'click', ()->
+				$(this).toggleClass('true')
+				if $(this).is('.true')
+					$.post('/favorites', { imageID: imageID });
+					$.get('/images/list', { related: true, imageID: imageID })
+					.done renderRecommendation
+				else
+					deleteFav(imageID)
 	)
 
 deleteFav = (imageID)->
@@ -58,31 +66,18 @@ isValidEmail = (email)->
 isEmpty = (dat)->
 	false
 
-# oooooooooooo = ->
-# 	$.get('/favorites')
-# 	.done (data)->
-# 		console.log(data)
-
-window.toggleFav = (el)->
-	$(el).toggleClass('true')
-	# id = $('.fluid').attr('data-imageID');
-	# if $(el).is('.true')
-	# 	$.post('/favorites', { imageID: id });
-	# else
-	# 	deleteFav(id)
-	# $.get('/images/list', { related: true, imageID: id })
-	# .done((data)->
-	# 	renderRecommendation(data)
-	# )
-
 renderRecommendation = (data)->
 	html = sortByFrequency(data.serialize()).reduce (prev, image)->
 		prev + (if image.id == parseInt $('.fluid').attr('data-imageID') then "" else
 			"""
-			<div style="background-image: url(#{image.url})"></div>
+			<a
+			href="#"
+			style="background-image: url(#{image.url})"></a>
 			""")
 	, ""
-	$('.component-images-horizontal').html(html).show()
+	return if !html
+	$('.component-images-horizontal').html(html)
+	.closest('.area-recommendation').show(300)
 
 sortByFrequency = (array) ->
 	frequency = {}
@@ -103,29 +98,19 @@ Array.prototype.serialize = ()->
 		pre
 	,[])
 
-window.hoge = (el)->
-	dat = $(el).data('data')
-	console.log(dat)
-	dat.do()
-
-getHtmlFav = (data)->
-	console.log(data)
+getHtmlFav = (isTrue)->
 	"""
-	<div class="component-fav" onclick="hoge(this)" data-data='#{JSON.stringify data}'>
+	<div class="component-fav #{isTrue}">
 		<span>♡</span>
 		<span>♥</span>
 	</div>
 	"""
 
-renderImages = (images)->
-	html = images.reduce (prev, dat)->
-		s = getHtmlFav({
-			imageID: dat.id,
-			do: ()->
-				toggleFav
-		});
+renderImages = ()->
+	html = window.dat.images.reduce (prev, dat)->
+		s = getHtmlFav(!!window.dat.favorites.filter((fav)-> dat.id == parseInt fav.imageID ).length);
 		prev + """
-		<div class="outer">
+		<div class="outer" data-imageID="#{dat.id}">
 			<a
 			class="inner" href="/images?imageID=#{dat.id}"
 			style="background-image: url(#{dat.url})">
@@ -135,6 +120,14 @@ renderImages = (images)->
 		""";
 	, ""
 	$('#component-images').html(html)
+	.find('.component-fav').on 'click', ()->
+		$(this).toggleClass('true')
+		imageID = $(this).closest('.outer').data('imageid')
+		console.log(imageID)
+		if $(this).is('.true')
+			$.post('/favorites', { imageID: imageID });
+		else
+			deleteFav(imageID)
 
 renderImage = (image)->
 	html = """
