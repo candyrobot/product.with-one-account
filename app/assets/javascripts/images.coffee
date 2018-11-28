@@ -21,9 +21,10 @@ window.initializeApp = ->
 			imageID = dat.images[0].id
 			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
 			$('.row').html("""
+			""" + (if countUp('x') > 3 then "" else """
 			<div class="balloon">
 				タップして "お気入り" に入れると…　👉
-			</div>
+			</div>""") + """
 			<div class="fav-area" onclick="$(this).prev().hide()">#{getHtmlFav(b)}</div>
 			""")
 			.find('.component-fav').on 'click', ()->
@@ -180,3 +181,10 @@ toast = (txt)->
 			$(this).hide(300)
 		, 2000
 	)
+
+countUp = (key)->
+	a = []
+	a[key] = JSON.parse localStorage.getItem(key)
+	a[key] = 0 if a[key] == null
+	localStorage.setItem(key, JSON.stringify(++a[key]))
+	a[key]
