@@ -9,11 +9,11 @@ window.initializeApp = ->
 		if dat.session.userID
 			$('#component-actions .login').hide()
 			$('#component-actions .signup').hide()
-		if dat.images.length == 1
-			renderImage(dat.images[0])
 		else
-			renderImages()
+			$('#component-actions .mypage').hide()
+
 		if location.search.indexOf('imageID') != -1
+			renderImage(dat.images[0])
 			imageID = dat.images[0].id
 			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
 			$('.fav-area').html(getHtmlFav(b))
@@ -25,6 +25,9 @@ window.initializeApp = ->
 					.done renderRecommendation
 				else
 					deleteFav(imageID)
+		else
+			renderImages()
+
 		$('#component-logout h1').text(window.dat.session.userID)
 		$('#component-logout h5').text(window.dat.session.email)
 	)
@@ -148,6 +151,7 @@ window.post = ->
 	url = $('#component-post input').val();
 	if(isValidUrl(url))
 		$.post('/images/', { url: url });
+		setTimeout 'location.reload()', 1000
 
 isValidUrl = (url)->
 	url.indexOf('.jpg') != -1 ||

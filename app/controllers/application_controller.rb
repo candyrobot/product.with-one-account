@@ -5,8 +5,12 @@ class ApplicationController < ActionController::Base
 
     if params.key?(:imageID)
       images = Image.where(id: params[:imageID])
+    elsif params.key?(:favorite) && session[:user_id]
+      images = Image.all.reverse_order.select {|image|
+        Favorite.where(imageID: image.id, userID: session[:user_id]).present?
+      }.reverse
     else
-      images = Image.all
+      images = Image.all.reverse_order
     end
 
     render json: {
