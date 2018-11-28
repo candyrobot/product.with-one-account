@@ -11,6 +11,7 @@ window.initializeApp = ->
 			$('#component-actions .signup').hide()
 		else
 			$('#component-actions .mypage').hide()
+			$('#component-actions .favorite').hide()
 
 		if location.search.indexOf('imageID') != -1
 			renderImage(dat.images[0])
@@ -18,13 +19,15 @@ window.initializeApp = ->
 			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
 			$('.fav-area').html(getHtmlFav(b))
 			.find('.component-fav').on 'click', ()->
-				$(this).toggleClass('true')
 				if $(this).is('.true')
-					$.post('/favorites', { imageID: imageID });
+					deleteFav(imageID)
+					.done => $(this).removeClass('true')
+				else
+					$.post('/favorites', { imageID: imageID })
+					.fail (dat)-> toast(dat.responseJSON.toast)
+					.done => $(this).addClass('true')
 					$.get('/images/list', { related: true, imageID: imageID })
 					.done renderRecommendation
-				else
-					deleteFav(imageID)
 		else
 			renderImages()
 
@@ -40,8 +43,7 @@ deleteFav = (imageID)->
 			imageID: imageID
 		}
 	})
-	.done (a)->
-		console.log(a)
+	.fail (dat)-> toast(dat.responseJSON.toast)
 
 window.signup = ->
 	dat = {}
@@ -49,19 +51,23 @@ window.signup = ->
 	dat.password = $('#component-signup .password').val()
 	return if isInvalid(dat)
 	$.post('/users/', dat)
-	# TODO sessionがうまく飛ばない 連続postはやはり厳しいか
-	login(dat)
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done ->
+		# TODO sessionがうまく飛ばない? 連続postはやはり厳しいか
+		login(dat)
 
 window.logout = ->
 	$.post('/users/logout')
-	setTimeout 'location.reload()', 1000
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done -> setTimeout 'location.reload()', 1000
 
 window.login = (dat = {})->
 	dat.email = dat.email || $('#component-login .email').val()
 	dat.password = dat.password || $('#component-login .password').val()
 	return if isInvalid(dat)
 	$.post('/users/login', dat)
-	setTimeout 'location.reload()', 1000
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done -> setTimeout 'location.reload()', 1000
 
 isInvalid = (dat)->
 	isEmpty(dat) || !isValidEmail(dat.email)
@@ -131,13 +137,15 @@ renderImages = ()->
 	, ""
 	$('#component-images').html(html)
 	.find('.component-fav').on 'click', ()->
-		$(this).toggleClass('true')
+		# $(this).toggleClass('true')
 		imageID = $(this).closest('.outer').data('imageid')
-		console.log(imageID)
 		if $(this).is('.true')
-			$.post('/favorites', { imageID: imageID });
-		else
 			deleteFav(imageID)
+			.done => $(this).removeClass('true')
+		else
+			$.post('/favorites', { imageID: imageID })
+			.fail (dat)-> toast(dat.responseJSON.toast)
+			.done => $(this).addClass('true')
 
 renderImage = (image)->
 	html = """
@@ -149,16 +157,18 @@ renderImage = (image)->
 
 window.post = ->
 	url = $('#component-post input').val();
-	if(isValidUrl(url))
-		$.post('/images/', { url: url });
-		setTimeout 'location.reload()', 1000
+	$.post('/images/', { url: url })
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done -> setTimeout 'location.reload()', 1000
 
-isValidUrl = (url)->
-	url.indexOf('.jpg') != -1 ||
-	url.indexOf('.jpeg') != -1 ||
-	url.indexOf('.png') != -1 ||
-	url.indexOf('.gif') != -1 ||
-	url.indexOf('.JPG') != -1 ||
-	url.indexOf('.JPEG') != -1 ||
-	url.indexOf('.PNG') != -1 ||
-	url.indexOf('.GIF') != -1
+toast = (txt)->
+	return if !txt
+	$("""
+	<div>#{txt}</div>
+	""").appendTo('#layer-asAlert')
+	.hide()
+	.show(300, ()->
+		setTimeout ()=>
+			$(this).hide(300)
+		, 2000
+	)

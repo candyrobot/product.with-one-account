@@ -1,8 +1,8 @@
 class UsersController < ApplicationController
   def create
-    # 重複チェック
-    email = User.where email: params[:email]
-    return if email.length != 0
+    return render json: { toast: @@toastEmpty }, status: :bad_request if params[:email].blank?
+    return render json: { toast: @@toastEmpty }, status: :bad_request if params[:password].blank?
+    return render json: { toast: @@toastDuplicates }, status: :bad_request if User.where(email: params[:email]).present?
 
     email = User.new({email: params[:email], password: params[:password] })
     email.save
@@ -10,7 +10,8 @@ class UsersController < ApplicationController
 
   def login
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> login"
-    logger.debug session[:user_id]
+    return render json: { toast: @@toastEmpty }, status: :bad_request if params[:email].blank?
+    return render json: { toast: @@toastEmpty }, status: :bad_request if params[:password].blank?
     if params.key?(:email) || params.key?(:password)
       user = User.where(email: params[:email], password: params[:password])
       if user.length != 0

@@ -1,12 +1,8 @@
 class FavoritesController < ApplicationController
   def create
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> fav"
-    logger.debug params[:imageID]
-    return if !session[:user_id] || !params.key?(:imageID)
-
-    # 重複チェック
-    favorites = Favorite.where imageID: params[:imageID], userID: session[:user_id]
-    return if favorites.length != 0
+    return render json: { toast: @@toastNotLogin }, status: :unauthorized if session[:user_id].blank?
+    return render json: { toast: @@toastDuplicates }, status: :bad_request if Favorite.where(imageID: params[:imageID], userID: session[:user_id]).present?
 
     favorite = Favorite.new({imageID: params[:imageID], userID: session[:user_id] })
     favorite.save
@@ -18,6 +14,8 @@ class FavoritesController < ApplicationController
 
   def destroy
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> del"
+    return render json: { toast: @@toastNotLogin }, status: :unauthorized if session[:user_id].blank?
+
     favorites = Favorite.where imageID: params[:imageID], userID: session[:user_id]
     favorites[0].destroy
   end
