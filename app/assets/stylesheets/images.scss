@@ -32,6 +32,14 @@ input, button {
   border: none;
 }
 
+.close {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  font-size: 30px;
+  color: white;
+}
+
 .component-layer {
   position: fixed;
   left: 0;
@@ -133,6 +141,7 @@ input, button {
   height: 100%;
   padding: 40vh 10px 0;
   background-color: rgba(28, 161, 242, .8);
+  position: relative;
   > h1 {
     color: white;
     font-family: impact;
@@ -175,6 +184,7 @@ input, button {
 }
 
 .area-recommendation {
+  position: relative;
   background-color: rgba(0, 0, 0, 1);
   > h4 {
     margin: 10px 10px 0;

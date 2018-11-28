@@ -12,8 +12,9 @@
 	<div class="frombottom">
 		<div class="fav-area"></div>
 		<div class="area-recommendation" style="display: none">
-				<h4>関連</h4>
-				<div class="component-images-horizontal"></div>
+			<h4>関連</h4>
+			<div class="component-images-horizontal"></div>
+			<div class="close" onclick="$(this).parent().hide(300)">×</div>
 		</div>
 		<div id="component-actions">
 			<button class="signup" onclick="$('#component-signup').show(300)">登録</button>
@@ -29,18 +30,21 @@
 		<input type="text" class="email" placeholder="email">
 		<input type="password" class="password" placeholder="password">
 		<button onclick="signup()">サインアップ</button>
+		<div class="close" onclick="$(this).parent().hide(300)">×</div>
 	</div>
 
 	<div id="component-login" class="component-input" style="display: none;">
 		<input type="text" class="email" name="email" placeholder="email">
 		<input type="password" class="password" name="password" placeholder="password">
 		<button onclick="login()">ログイン</button>
+		<div class="close" onclick="$(this).parent().hide(300)">×</div>
 	</div>
 
 	<div id="component-logout" class="component-input" style="display: none;">
 		<h1>＼(^o^)／</h1>
 		<h5>xxxxxxxxxx@xxxxx.xxx</h5>
 		<button onclick="logout()">ログアウト</button>
+		<div class="close" onclick="$(this).parent().hide(300)">×</div>
 	</div>
 </div>
 
