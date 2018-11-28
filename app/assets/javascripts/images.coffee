@@ -19,15 +19,15 @@ window.initializeApp = ->
 			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
 			$('.fav-area').html(getHtmlFav(b))
 			.find('.component-fav').on 'click', ()->
-				$(this).toggleClass('true')
 				if $(this).is('.true')
+					deleteFav(imageID)
+					.done => $(this).removeClass('true')
+				else
 					$.post('/favorites', { imageID: imageID })
-					.done (dat = {})->
-						dat.toast && toast(dat.toast)
+					.fail (dat)-> toast(dat.responseJSON.toast)
+					.done => $(this).addClass('true')
 					$.get('/images/list', { related: true, imageID: imageID })
 					.done renderRecommendation
-				else
-					deleteFav(imageID)
 		else
 			renderImages()
 
@@ -43,8 +43,7 @@ deleteFav = (imageID)->
 			imageID: imageID
 		}
 	})
-	.done (dat = {})->
-		dat.toast && toast(dat.toast)
+	.fail (dat)-> toast(dat.responseJSON.toast)
 
 window.signup = ->
 	dat = {}
@@ -52,25 +51,23 @@ window.signup = ->
 	dat.password = $('#component-signup .password').val()
 	return if isInvalid(dat)
 	$.post('/users/', dat)
-	.done (dat = {})->
-		dat.toast && toast(dat.toast)
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done ->
 		# TODO sessionがうまく飛ばない? 連続postはやはり厳しいか
 		login(dat)
 
 window.logout = ->
 	$.post('/users/logout')
-	.done (dat = {})->
-		dat.toast && toast(dat.toast)
-		setTimeout 'location.reload()', 1000
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done -> setTimeout 'location.reload()', 1000
 
 window.login = (dat = {})->
 	dat.email = dat.email || $('#component-login .email').val()
 	dat.password = dat.password || $('#component-login .password').val()
 	return if isInvalid(dat)
 	$.post('/users/login', dat)
-	.done (dat = {})->
-		dat.toast && toast(dat.toast)
-		setTimeout 'location.reload()', 1000
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done -> setTimeout 'location.reload()', 1000
 
 isInvalid = (dat)->
 	isEmpty(dat) || !isValidEmail(dat.email)
@@ -140,15 +137,15 @@ renderImages = ()->
 	, ""
 	$('#component-images').html(html)
 	.find('.component-fav').on 'click', ()->
-		$(this).toggleClass('true')
+		# $(this).toggleClass('true')
 		imageID = $(this).closest('.outer').data('imageid')
-		console.log(imageID)
 		if $(this).is('.true')
-			$.post('/favorites', { imageID: imageID })
-			.done (dat = {})->
-				dat.toast && toast(dat.toast)
-		else
 			deleteFav(imageID)
+			.done => $(this).removeClass('true')
+		else
+			$.post('/favorites', { imageID: imageID })
+			.fail (dat)-> toast(dat.responseJSON.toast)
+			.done => $(this).addClass('true')
 
 renderImage = (image)->
 	html = """
@@ -161,11 +158,11 @@ renderImage = (image)->
 window.post = ->
 	url = $('#component-post input').val();
 	$.post('/images/', { url: url })
-	.done (dat = {})->
-		dat.toast && toast(dat.toast)
-		setTimeout 'location.reload()', 1000
+	.fail (dat)-> toast(dat.responseJSON.toast)
+	.done -> setTimeout 'location.reload()', 1000
 
 toast = (txt)->
+	return if !txt
 	$("""
 	<div>#{txt}</div>
 	""").appendTo('#layer-asAlert')

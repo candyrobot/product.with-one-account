@@ -1,7 +1,7 @@
 class FavoritesController < ApplicationController
   def create
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> fav"
-    return render json: { toast: @@toastNotLogin } if session[:user_id].blank?
+    return render json: { toast: @@toastNotLogin }, status: :unauthorized if session[:user_id].blank?
     
     return if !session[:user_id] || !params.key?(:imageID)
 
