@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   @@toastNotLogin = 'ログインしてません'
   @@toastEmpty = '入力値が空です'
   @@toastInvalidFileType = '拡張子が無効。別のURLを試して下さい'
-  @@toastDuplicates = '既に存在します'
+  @@toastDuplicates = '既にデータベースに存在します'
 
   def index
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> app"
