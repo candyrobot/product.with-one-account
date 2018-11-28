@@ -12,12 +12,20 @@ window.initializeApp = ->
 		else
 			$('#component-actions .mypage').hide()
 			$('#component-actions .favorite').hide()
+			$('.component-images-horizontal').on 'click', 'a', ->
+				toast 'ログインすると見れます。　最高のエロ画像を探そう!🌟'
+				return false
 
 		if location.search.indexOf('imageID') != -1
 			renderImage(dat.images[0])
 			imageID = dat.images[0].id
 			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
-			$('.fav-area').html(getHtmlFav(b))
+			$('.row').html("""
+			<div class="balloon">
+				タップして "お気入り" に入れると…　👉
+			</div>
+			<div class="fav-area" onclick="$(this).prev().hide()">#{getHtmlFav(b)}</div>
+			""")
 			.find('.component-fav').on 'click', ()->
 				if $(this).is('.true')
 					deleteFav(imageID)
@@ -26,8 +34,8 @@ window.initializeApp = ->
 					$.post('/favorites', { imageID: imageID })
 					.fail (dat)-> toast(dat.responseJSON.toast)
 					.done => $(this).addClass('true')
-					$.get('/images/list', { related: true, imageID: imageID })
-					.done renderRecommendation
+				$.get('/images/list', { related: true, imageID: imageID })
+				.done renderRecommendation
 		else
 			renderImages()
 
@@ -47,8 +55,8 @@ deleteFav = (imageID)->
 
 window.signup = ->
 	dat = {}
-	dat.email = $('#component-signup .email').val()
-	dat.password = $('#component-signup .password').val()
+	dat.email = $('#component-login .email').val()
+	dat.password = $('#component-login .password').val()
 	return if isInvalid(dat)
 	$.post('/users/', dat)
 	.fail (dat)-> toast(dat.responseJSON.toast)
