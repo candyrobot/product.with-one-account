@@ -11,6 +11,7 @@ window.initializeApp = ->
 			$('#component-actions .signup').hide()
 		else
 			$('#component-actions .mypage').hide()
+			$('#component-actions .favorite').hide()
 
 		if location.search.indexOf('imageID') != -1
 			renderImage(dat.images[0])
