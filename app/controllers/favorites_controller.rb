@@ -1,7 +1,8 @@
 class FavoritesController < ApplicationController
   def create
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> fav"
-    logger.debug params[:imageID]
+    return render json: { toast: @@toastNotLogin } if session[:user_id].blank?
+    
     return if !session[:user_id] || !params.key?(:imageID)
 
     # 重複チェック

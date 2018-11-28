@@ -1,5 +1,11 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+
+  @@toastNotLogin = 'ログインしてません'
+  @@toastEmpty = '入力値が空です'
+  @@toastInvalidFileType = '拡張子が無効。別のURLを試して下さい'
+  @@toastDuplicates = '既に存在します'
+
   def index
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> app"
 
@@ -21,5 +27,16 @@ class ApplicationController < ActionController::Base
         email: session[:user_id] && User.find(session[:user_id]).email
       }
     }
+  end
+
+  def isValidFileType(url)
+    url.include?('.jpg') ||
+    url.include?('.jpeg') ||
+    url.include?('.png') ||
+    url.include?('.gif') ||
+    url.include?('.JPG') ||
+    url.include?('.JPEG') ||
+    url.include?('.PNG') ||
+    url.include?('.GIF')
   end
 end

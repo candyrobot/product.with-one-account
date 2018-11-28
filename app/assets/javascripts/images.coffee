@@ -21,7 +21,9 @@ window.initializeApp = ->
 			.find('.component-fav').on 'click', ()->
 				$(this).toggleClass('true')
 				if $(this).is('.true')
-					$.post('/favorites', { imageID: imageID });
+					$.post('/favorites', { imageID: imageID })
+					.done (dat = {})->
+						dat.toast && toast(dat.toast)
 					$.get('/images/list', { related: true, imageID: imageID })
 					.done renderRecommendation
 				else
@@ -41,8 +43,8 @@ deleteFav = (imageID)->
 			imageID: imageID
 		}
 	})
-	.done (a)->
-		console.log(a)
+	.done (dat = {})->
+		dat.toast && toast(dat.toast)
 
 window.signup = ->
 	dat = {}
@@ -50,19 +52,25 @@ window.signup = ->
 	dat.password = $('#component-signup .password').val()
 	return if isInvalid(dat)
 	$.post('/users/', dat)
-	# TODO sessionがうまく飛ばない 連続postはやはり厳しいか
-	login(dat)
+	.done (dat = {})->
+		dat.toast && toast(dat.toast)
+		# TODO sessionがうまく飛ばない? 連続postはやはり厳しいか
+		login(dat)
 
 window.logout = ->
 	$.post('/users/logout')
-	setTimeout 'location.reload()', 1000
+	.done (dat = {})->
+		dat.toast && toast(dat.toast)
+		setTimeout 'location.reload()', 1000
 
 window.login = (dat = {})->
 	dat.email = dat.email || $('#component-login .email').val()
 	dat.password = dat.password || $('#component-login .password').val()
 	return if isInvalid(dat)
 	$.post('/users/login', dat)
-	setTimeout 'location.reload()', 1000
+	.done (dat = {})->
+		dat.toast && toast(dat.toast)
+		setTimeout 'location.reload()', 1000
 
 isInvalid = (dat)->
 	isEmpty(dat) || !isValidEmail(dat.email)
@@ -136,7 +144,9 @@ renderImages = ()->
 		imageID = $(this).closest('.outer').data('imageid')
 		console.log(imageID)
 		if $(this).is('.true')
-			$.post('/favorites', { imageID: imageID });
+			$.post('/favorites', { imageID: imageID })
+			.done (dat = {})->
+				dat.toast && toast(dat.toast)
 		else
 			deleteFav(imageID)
 
@@ -150,16 +160,18 @@ renderImage = (image)->
 
 window.post = ->
 	url = $('#component-post input').val();
-	if(isValidUrl(url))
-		$.post('/images/', { url: url });
+	$.post('/images/', { url: url })
+	.done (dat = {})->
+		dat.toast && toast(dat.toast)
 		setTimeout 'location.reload()', 1000
 
-isValidUrl = (url)->
-	url.indexOf('.jpg') != -1 ||
-	url.indexOf('.jpeg') != -1 ||
-	url.indexOf('.png') != -1 ||
-	url.indexOf('.gif') != -1 ||
-	url.indexOf('.JPG') != -1 ||
-	url.indexOf('.JPEG') != -1 ||
-	url.indexOf('.PNG') != -1 ||
-	url.indexOf('.GIF') != -1
+toast = (txt)->
+	$("""
+	<div>#{txt}</div>
+	""").appendTo('#layer-asAlert')
+	.hide()
+	.show(300, ()->
+		setTimeout ()=>
+			$(this).hide(300)
+		, 2000
+	)

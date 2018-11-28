@@ -12,9 +12,10 @@ class ImagesController < ApplicationController
   end
 
   def create
-    # 重複チェック
-    image = Image.where url: params[:url]
-    return if image.length != 0
+    logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> create"
+    return render json: { toast: @@toastEmpty } if params[:url].blank?
+    # return render json: { toast: @@toastInvalidFileType } if !isValidFileType params[:url]
+    return render json: { toast: @@toastDuplicates } if Image.where(url: params[:url]).present?
 
     image = Image.new({url: params[:url] })
     image.save
