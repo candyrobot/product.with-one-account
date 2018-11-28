@@ -12,11 +12,8 @@ window.initializeApp = ->
 		else
 			$('#component-actions .mypage').hide()
 
-		if dat.images.length == 1
-			renderImage(dat.images[0])
-		else
-			renderImages()
 		if location.search.indexOf('imageID') != -1
+			renderImage(dat.images[0])
 			imageID = dat.images[0].id
 			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
 			$('.fav-area').html(getHtmlFav(b))
@@ -28,6 +25,9 @@ window.initializeApp = ->
 					.done renderRecommendation
 				else
 					deleteFav(imageID)
+		else
+			renderImages()
+
 		$('#component-logout h1').text(window.dat.session.userID)
 		$('#component-logout h5').text(window.dat.session.email)
 	)
