@@ -39,6 +39,9 @@ window.initializeApp = ->
 				$.get('/images/list', { related: true, imageID: imageID })
 				.done renderRecommendation
 				.always -> stopLoading()
+		else if location.search.indexOf('favorite') != -1
+			$('#component-actions .favorite').hide()
+			renderImages()
 		else
 			$('#component-actions .newPosts').hide()
 			renderImages()
@@ -154,9 +157,10 @@ renderImages = ()->
 		</div>"""
 		prev + """
 		#{t}
-		<div class="outer" data-imageID="#{dat.id}" style="display: none">
+		<div class="outer fas fa-unlink" data-imageID="#{dat.id}" style="display: none">
 			<a
-			class="inner" href="/images?imageID=#{dat.id}"
+			class="inner"
+			href="/images?imageID=#{dat.id}"
 			style="background-image: url(#{dat.url})">
 			</a>
 			#{s}
