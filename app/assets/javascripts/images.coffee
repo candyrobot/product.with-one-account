@@ -143,7 +143,7 @@ renderImages = ()->
 		</div>"""
 		prev + """
 		#{t}
-		<div class="outer" data-imageID="#{dat.id}">
+		<div class="outer" data-imageID="#{dat.id}" style="display: none">
 			<a
 			class="inner" href="/images?imageID=#{dat.id}"
 			style="background-image: url(#{dat.url})">
@@ -165,11 +165,13 @@ renderImages = ()->
 			.done => $(this).addClass('true')
 	$('#component-images')
 	.find('.message').on 'click', ->
-		if isAndroid() 
+		if isAndroid()
 			showWebview('https://www.youtuberepeat.com/watch?v=f9MsSWxJXhc')
 		else
 			# showWebview('https://www.youtube.com/watch?v=4EVrAYlp-Zs')
 			showWebview('https://www.youtuberepeat.com/watch?v=8iueP5sRQ-Y')
+	$('#component-images .outer:nth-child(-n + 11)').show()
+	lazyShow('#component-images .outer')
 renderImage = (image)->
 	html = """
 	<div class="fluid" data-imageID="#{image.id}">
@@ -225,3 +227,11 @@ stopLoading = ->
 
 isAndroid = ->
 	navigator.userAgent.indexOf('Android')>0
+
+lazyShow = (selector)->
+	$(selector).on 'inview', (e, isInView)->
+		if isInView
+			$(this)
+			.next().next().next().next()
+			.next().next().next().next()
+			.fadeIn 500
