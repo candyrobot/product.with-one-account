@@ -136,7 +136,7 @@ renderImages = ()->
 		s = getHtmlFav(!!window.dat.favorites.filter((fav)-> dat.id == parseInt fav.imageID ).length);
 		t = if i % 12 then "" else """<div class="message">
 			スマホのホーム画面にこのアプリを追加することができるのです
-			<i>ここをタップ</i>
+			<i>(ここをタップ)</i>
 		</div>"""
 		prev + """
 		#{t}
@@ -160,7 +160,9 @@ renderImages = ()->
 			$.post('/favorites', { imageID: imageID })
 			.fail (dat)-> toast(dat.responseJSON.toast)
 			.done => $(this).addClass('true')
-
+	$('#component-images')
+	.find('.message').on 'click', ->
+		showWebview('https://teratail.com/questions/43453')
 renderImage = (image)->
 	html = """
 	<div class="fluid" data-imageID="#{image.id}">
@@ -194,10 +196,12 @@ countUp = (key)->
 	localStorage.setItem(key, JSON.stringify(++a[key]))
 	a[key]
 
-window.show = ->
+showWebview = (url)->
 	$('#webview').fadeIn(400)
+	$('#webview iframe').attr('src', url)
 	$('#webview iframe').animate({
 		top: 0
 	}, 500)
 	$('#webview .close').on 'click', ->
 		$('#webview iframe').removeAttr('style')
+		$('#webview iframe').removeAttr('src')
