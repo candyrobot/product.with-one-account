@@ -135,9 +135,20 @@ getHtmlFav = (isTrue)->
 	"""
 
 renderImages = ()->
-	html = window.dat.images.reduce (prev, dat, i)->
+	j = 0
+	html = ""
+	if dat.session.userID
+		html = """
+		<div class="outer additional">
+			<div class="inner">
+				<i class="fas fa-plus"></i>
+			</div>
+		</div>
+		"""
+		j++
+	html += window.dat.images.reduce (prev, dat, i)->
 		s = getHtmlFav(!!window.dat.favorites.filter((fav)-> dat.id == parseInt fav.imageID ).length);
-		t = if i % 12 then "" else """<div class="message">
+		t = if (j + i) % 12 then "" else """<div class="message">
 			スマホのホーム画面にこのアプリを追加することができるのです
 			<i>(ここをタップ)</i>
 		</div>"""

@@ -234,6 +234,27 @@ input, button {
       font-family: "Font Awesome 5 Free";
     }
   }
+  > .additional {
+    padding: 10px;
+  }
+  > .additional .inner {
+    position: relative;
+    background-color: #a7d9f9;
+    border-radius: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    i {
+      content: "\f067";
+      font-family: "Font Awesome 5 Free";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      top: 0;
+      font-size: 58px;
+      text-align: center;
+      line-height: 165px;
+      color: #4fb4f3;
+    }
+  }
 }
 
 #component-actions {
