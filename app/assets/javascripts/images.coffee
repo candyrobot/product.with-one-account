@@ -232,6 +232,9 @@ lazyShow = (selector)->
 	$(selector).on 'inview', (e, isInView)->
 		if isInView
 			$(this)
-			.next().next().next().next()
-			.next().next().next().next()
+			# INFO: http://www.jquerystudy.info/reference/traversing/next.html#a_m1
+			.nextAll(selector + ':first').nextAll(selector + ':first')
+			.nextAll(selector + ':first').nextAll(selector + ':first')
+			.nextAll(selector + ':first').nextAll(selector + ':first')
+			.nextAll(selector + ':first').nextAll(selector + ':first')
 			.fadeIn 500

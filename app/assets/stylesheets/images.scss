@@ -76,7 +76,7 @@ input, button {
 }
 @keyframes fullexpand {
     0%  { width: 0px;}
-    100%{ width: 100%;} 
+    100%{ width: 100%;}
 }
 
 .component-overlay {
@@ -174,12 +174,12 @@ input, button {
 }
 
 #component-images {
-  padding: 5px;
+  padding: 1px;
   > .outer {
     position: relative;
     float: left;
     width: 50%;
-    padding: 5px;
+    padding: 1px;
   }
   > .outer > .inner {
     display: block;
@@ -206,7 +206,8 @@ input, button {
   > .message {
     clear: both;
     position: relative;
-    margin: 5px;
+    top: 1px;
+    margin: 2px;
     box-shadow: 0 1px 3px rgba(0,0,0,.3);
     padding: 10px;
     padding-left: 54px;
