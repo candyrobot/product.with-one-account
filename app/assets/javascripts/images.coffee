@@ -39,6 +39,9 @@ window.initializeApp = ->
 				$.get('/images/list', { related: true, imageID: imageID })
 				.done renderRecommendation
 				.always -> stopLoading()
+		else if location.search.indexOf('most') != -1
+			$('#component-actions .most').hide()
+			renderImages()
 		else if location.search.indexOf('favorite') != -1
 			$('#component-actions .favorite').hide()
 			renderImages()
