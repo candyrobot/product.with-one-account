@@ -76,7 +76,7 @@ input, button {
 }
 @keyframes fullexpand {
     0%  { width: 0px;}
-    100%{ width: 100%;} 
+    100%{ width: 100%;}
 }
 
 .component-overlay {
@@ -174,12 +174,12 @@ input, button {
 }
 
 #component-images {
-  padding: 5px;
+  padding: 1px;
   > .outer {
     position: relative;
     float: left;
     width: 50%;
-    padding: 5px;
+    padding: 1px;
   }
   > .outer > .inner {
     display: block;
@@ -206,7 +206,8 @@ input, button {
   > .message {
     clear: both;
     position: relative;
-    margin: 5px;
+    top: 1px;
+    margin: 2px;
     box-shadow: 0 1px 3px rgba(0,0,0,.3);
     padding: 10px;
     padding-left: 54px;
@@ -231,6 +232,27 @@ input, button {
       line-height: 21px;
       opacity: .5;
       font-family: "Font Awesome 5 Free";
+    }
+  }
+  > .additional {
+    padding: 10px;
+  }
+  > .additional .inner {
+    position: relative;
+    background-color: #a7d9f9;
+    border-radius: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    i {
+      content: "\f067";
+      font-family: "Font Awesome 5 Free";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      top: 0;
+      font-size: 58px;
+      text-align: center;
+      line-height: 165px;
+      color: #4fb4f3;
     }
   }
 }
