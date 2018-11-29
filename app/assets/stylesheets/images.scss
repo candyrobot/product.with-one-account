@@ -205,6 +205,14 @@ input, button {
       display: block;
       padding-top: 100%;
   }
+  > .outer > .favoriteNum {
+    position: absolute;
+    right: 35px;
+    bottom: 9px;
+    color: white;
+    font-size: 10px;
+    text-shadow: 0 0 10px black;
+  }
   > .outer > .component-fav {
     position: absolute;
     right: 11px;
