@@ -181,12 +181,25 @@ input, button {
     width: 50%;
     padding: 1px;
   }
+  > .outer:before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+    color: #666;
+    font-size: 40px;
+  }
   > .outer > .inner {
     display: block;
-    height: 0;
-    padding-top: 100%;
+    position: relative;
     background-size: cover;
     background-position: center;
+    background-color: rgba(0,0,0,.09);
+  }
+  > .outer > .inner:after {
+      content: "";
+      display: block;
+      padding-top: 100%;
   }
   > .outer > .component-fav {
     position: absolute;
@@ -215,7 +228,6 @@ input, button {
     color: #888;
     font-weight: bold;
     border-radius: 3px;
-
     background-color: rgba(28, 161, 242, .8);
     color: white;
     &:before {
@@ -246,12 +258,11 @@ input, button {
       content: "\f067";
       font-family: "Font Awesome 5 Free";
       position: absolute;
-      left: 0;
-      width: 100%;
-      top: 0;
+      left: 50%;
+      margin-left: -25px;
+      top: 50%;
       font-size: 58px;
-      text-align: center;
-      line-height: 165px;
+      margin-top: -28px;
       color: #4fb4f3;
     }
   }
