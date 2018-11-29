@@ -26,7 +26,8 @@
 </div>
 
 <div class="component-layer">
-	<div id="component-login" class="component-input" style="display: none;">
+	<div id="component-login" class="component-overlay" style="display: none;">
+		<div class="small">忘れないようにメモを。</div>
 		<input type="text" class="email" name="email" placeholder="email">
 		<input type="password" class="password" name="password" placeholder="password">
 		<div class="">
@@ -46,11 +47,18 @@
 		<div class="close" onclick="$(this).parent().hide(300)">×</div>
 	</div>
 
-	<div id="component-logout" class="component-input" style="display: none;">
+	<div id="component-logout" class="component-overlay" style="display: none;">
 		<h1>＼(^o^)／</h1>
 		<h5>xxxxxxxxxx@xxxxx.xxx</h5>
 		<button onclick="logout()">ログアウト</button>
 		<div class="close" onclick="$(this).parent().hide(300)">×</div>
+	</div>
+
+	<div id="webview" class="component-overlay" style="display: none;">
+		<div class="frombottom">
+			<iframe src="https://teratail.com/questions/43453" frameborder="0"></iframe>
+		</div>
+		<div class="close" onclick="$(this).parent().fadeOut(400)">×</div>
 	</div>
 </div>
 

@@ -4,6 +4,10 @@
     <title>WithOneAccount</title>
     <%= csrf_meta_tags %>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
+    <!-- INFO: https://fontawesome.com/start -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
@@ -11,4 +15,31 @@
   <body>
     <%= yield %>
   </body>
+  <script>
+
+    // INFO: https://qiita.com/peutes/items/d74e5758a36478fbc039
+    // document.addEventListener('touchend', event => {
+    //   event.preventDefault();
+    // }, false);
+    disableUsersZoom();
+    function disableUsersZoom() {
+      // for zoom with multiple fingers
+      document.addEventListener('touchstart', event => {
+        if (event.touches.length > 1) {
+          event.preventDefault();
+        }
+      }, true);
+
+      // for zoom with double tap.
+      let lastTouch = 0;
+      document.addEventListener('touchend', event => {
+        const now = window.performance.now();
+        if (now - lastTouch <= 500) {
+          event.preventDefault();
+        }
+        lastTouch = now;
+      }, true);
+    }
+
+  </script>
 </html>

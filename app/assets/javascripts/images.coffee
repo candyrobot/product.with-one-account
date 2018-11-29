@@ -135,8 +135,8 @@ renderImages = ()->
 	html = window.dat.images.reduce (prev, dat, i)->
 		s = getHtmlFav(!!window.dat.favorites.filter((fav)-> dat.id == parseInt fav.imageID ).length);
 		t = if i % 12 then "" else """<div class="message">
-			Safari（Androidの方はChrome）で、スマホのホーム画面に<br>
-			このアプリを追加することができます!!
+			スマホのホーム画面にこのアプリを追加することができるのです
+			<i>ここをタップ</i>
 		</div>"""
 		prev + """
 		#{t}
@@ -193,3 +193,11 @@ countUp = (key)->
 	a[key] = 0 if a[key] == null
 	localStorage.setItem(key, JSON.stringify(++a[key]))
 	a[key]
+
+window.show = ->
+	$('#webview').fadeIn(400)
+	$('#webview iframe').animate({
+		top: 0
+	}, 500)
+	$('#webview .close').on 'click', ->
+		$('#webview iframe').removeAttr('style')
