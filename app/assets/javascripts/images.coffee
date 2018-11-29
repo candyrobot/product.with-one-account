@@ -132,9 +132,14 @@ getHtmlFav = (isTrue)->
 	"""
 
 renderImages = ()->
-	html = window.dat.images.reduce (prev, dat)->
+	html = window.dat.images.reduce (prev, dat, i)->
 		s = getHtmlFav(!!window.dat.favorites.filter((fav)-> dat.id == parseInt fav.imageID ).length);
+		t = if i % 12 then "" else """<div class="message">
+			Safari（Androidの方はChrome）で、スマホのホーム画面に<br>
+			このアプリを追加することができます!!
+		</div>"""
 		prev + """
+		#{t}
 		<div class="outer" data-imageID="#{dat.id}">
 			<a
 			class="inner" href="/images?imageID=#{dat.id}"
