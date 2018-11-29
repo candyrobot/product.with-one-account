@@ -14,13 +14,10 @@ class UsersController < ApplicationController
     return render json: { toast: @@toastEmpty }, status: :bad_request if params[:password].blank?
     if params.key?(:email) || params.key?(:password)
       user = User.where(email: params[:email], password: params[:password])
-      if user.length != 0
-        session[:user_id] = user[0].id
-        logger.debug "🌟session start"
-        logger.debug session[:user_id]
-      else
-        session[:user_id] = nil
-      end
+      return render json: { toast: @@toastNotfound }, status: :bad_request if user.blank?
+      session[:user_id] = user[0].id
+      logger.debug "🌟session start"
+      logger.debug session[:user_id]
     end
   end
 
