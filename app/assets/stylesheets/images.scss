@@ -55,6 +55,30 @@ input, button {
   100% { transform: scale(1.0, 1.0) translate(0%, 0%); }
 }
 
+.loadingLine {
+  display: none;
+  position: relative;
+  height: 3px;
+  // background: #ddd;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,.2);
+  .expand {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    // background: rgb(28, 161, 242);
+    // background-color: #edb800;
+    background-color: #FFFB0D;
+    position: absolute;
+    -moz-animation: fullexpand .3s ease-out infinite;
+    -webkit-animation: fullexpand .3s ease-out infinite;
+  }
+}
+@keyframes fullexpand {
+    0%  { width: 0px;}
+    100%{ width: 100%;} 
+}
+
 .component-overlay {
   position: relative;
   width: 100%;
@@ -290,9 +314,11 @@ input, button {
   }
 }
 
-#layer-asAlert {
-  padding-top: 60px;
-  > div {
+#layer-appMessages {
+  .alerts {
+    margin-top: 55px;
+  }
+  .alerts > div {
     margin: 10px;
     padding: 10px 13px;
     color: #444;
@@ -305,11 +331,16 @@ input, button {
 }
 
 #webview {
+  p {
+    padding-left: 10px;
+    font-weight: bold;
+  }
   iframe {
     position: relative;
     top: 100%; /* アニメーション用 */
     display: block;
-    height: calc( 100% - 70px );
+    height: calc( 100% - 55px );
     background-color: black;
+    box-shadow: 0 0px 10px rgba(0,0,0,.4);
   }
 }
