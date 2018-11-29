@@ -28,6 +28,7 @@ window.initializeApp = ->
 			<div class="fav-area" onclick="$(this).prev().hide()">#{getHtmlFav(b)}</div>
 			""")
 			.find('.component-fav').on 'click', ()->
+				startLoading()
 				if $(this).is('.true')
 					deleteFav(imageID)
 					.done => $(this).removeClass('true')
@@ -37,7 +38,9 @@ window.initializeApp = ->
 					.done => $(this).addClass('true')
 				$.get('/images/list', { related: true, imageID: imageID })
 				.done renderRecommendation
+				.always -> stopLoading()
 		else
+			$('#component-actions .newPosts').hide()
 			renderImages()
 
 		$('#component-logout h1').text(window.dat.session.userID)
@@ -136,7 +139,7 @@ renderImages = ()->
 		s = getHtmlFav(!!window.dat.favorites.filter((fav)-> dat.id == parseInt fav.imageID ).length);
 		t = if i % 12 then "" else """<div class="message">
 			スマホのホーム画面にこのアプリを追加することができるのです
-			<i>ここをタップ</i>
+			<i>(ここをタップ)</i>
 		</div>"""
 		prev + """
 		#{t}
@@ -160,7 +163,13 @@ renderImages = ()->
 			$.post('/favorites', { imageID: imageID })
 			.fail (dat)-> toast(dat.responseJSON.toast)
 			.done => $(this).addClass('true')
-
+	$('#component-images')
+	.find('.message').on 'click', ->
+		if isAndroid() 
+			showWebview('https://www.youtuberepeat.com/watch?v=f9MsSWxJXhc')
+		else
+			# showWebview('https://www.youtube.com/watch?v=4EVrAYlp-Zs')
+			showWebview('https://www.youtuberepeat.com/watch?v=8iueP5sRQ-Y')
 renderImage = (image)->
 	html = """
 	<div class="fluid" data-imageID="#{image.id}">
@@ -179,7 +188,7 @@ toast = (txt)->
 	return if !txt
 	$("""
 	<div>#{txt}</div>
-	""").appendTo('#layer-asAlert')
+	""").appendTo('#layer-appMessages .alerts')
 	.hide()
 	.show(300, ()->
 		setTimeout ()=>
@@ -194,10 +203,25 @@ countUp = (key)->
 	localStorage.setItem(key, JSON.stringify(++a[key]))
 	a[key]
 
-window.show = ->
+showWebview = (url)->
+	startLoading()
 	$('#webview').fadeIn(400)
+	$('#webview iframe').attr('src', url)
 	$('#webview iframe').animate({
 		top: 0
 	}, 500)
 	$('#webview .close').on 'click', ->
 		$('#webview iframe').removeAttr('style')
+		$('#webview iframe').removeAttr('src')
+	$('#webview iframe').on 'load', ->
+		stopLoading()
+
+startLoading = ->
+	$('.loadingLine').show(300)
+	setTimeout 'stopLoading()', 5000
+
+stopLoading = ->
+	$('.loadingLine').hide(300)
+
+isAndroid = ->
+	navigator.userAgent.indexOf('Android')>0
