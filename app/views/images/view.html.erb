@@ -17,6 +17,7 @@
 			<div class="close" onclick="$(this).parent().hide(300)">×</div>
 		</div>
 		<div id="component-actions">
+			<a class="most" href="/images?most">人気</a>
 			<a class="newPosts" href="/images">新着</a>
 			<a class="favorite" href="/images?favorite=true">お気入り一覧</a>
 			<button class="mypage" onclick="$('#component-logout').show(300)">マイページ</button>
@@ -57,7 +58,10 @@
 	<div id="webview" class="component-overlay" style="display: none;">
 		<div class="frombottom">
 			<p>やり方を動画で解説</p>
-			<iframe src="" frameborder="0"></iframe>
+
+			<iframe frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+			<!-- <iframe src="" frameborder="0"></iframe> -->
 		</div>
 		<div class="close" onclick="$(this).parent().fadeOut(400)">×</div>
 	</div>

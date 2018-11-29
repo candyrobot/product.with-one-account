@@ -189,6 +189,10 @@ input, button {
     color: #666;
     font-size: 40px;
   }
+  // For lazyShow
+  > .outer:nth-child(n + 11) {
+    display: none;
+  }
   > .outer > .inner {
     display: block;
     position: relative;

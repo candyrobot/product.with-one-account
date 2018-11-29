@@ -39,6 +39,9 @@ window.initializeApp = ->
 				$.get('/images/list', { related: true, imageID: imageID })
 				.done renderRecommendation
 				.always -> stopLoading()
+		else if location.search.indexOf('most') != -1
+			$('#component-actions .most').hide()
+			renderImages()
 		else if location.search.indexOf('favorite') != -1
 			$('#component-actions .favorite').hide()
 			renderImages()
@@ -157,7 +160,7 @@ renderImages = ()->
 		</div>"""
 		prev + """
 		#{t}
-		<div class="outer fas fa-unlink" data-imageID="#{dat.id}" style="display: none">
+		<div class="outer fas fa-unlink" data-imageID="#{dat.id}">
 			<a
 			class="inner"
 			href="/images?imageID=#{dat.id}"
@@ -181,11 +184,10 @@ renderImages = ()->
 	$('#component-images')
 	.find('.message').on 'click', ->
 		if isAndroid()
-			showWebview('https://www.youtuberepeat.com/watch?v=f9MsSWxJXhc')
+			showWebview('https://www.youtube.com/embed/f9MsSWxJXhc')
 		else
 			# showWebview('https://www.youtube.com/watch?v=4EVrAYlp-Zs')
-			showWebview('https://www.youtuberepeat.com/watch?v=8iueP5sRQ-Y')
-	$('#component-images .outer:nth-child(-n + 11)').show()
+			showWebview('https://www.youtube.com/embed/8iueP5sRQ-Y')
 	lazyShow('#component-images .outer')
 renderImage = (image)->
 	html = """
@@ -228,6 +230,7 @@ showWebview = (url)->
 		top: 0
 	}, 500)
 	$('#webview .close').on 'click', ->
+		# INFO: topを戻すため
 		$('#webview iframe').removeAttr('style')
 		$('#webview iframe').removeAttr('src')
 	$('#webview iframe').on 'load', ->

@@ -15,7 +15,16 @@ class ApplicationController < ActionController::Base
     elsif params.key?(:favorite) && session[:user_id]
       images = Image.all.reverse_order.select {|image|
         Favorite.where(imageID: image.id, userID: session[:user_id]).present?
-      }.reverse
+      }
+    elsif params.key?(:most)
+      images = Image.all.sort_by {|image|
+        Favorite.where(imageID: image.id).length
+      }.reverse.map {|image|
+        hImage = image.attributes
+        logger.debug hImage
+        hImage["favorite"] = Favorite.where(imageID: image.id).length
+        hImage
+      }
     else
       images = Image.all.reverse_order
     end
