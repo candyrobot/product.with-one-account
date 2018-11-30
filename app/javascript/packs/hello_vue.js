@@ -8,10 +8,25 @@
 import Vue from 'vue'
 import App from '../app.vue'
 
-document.addEventListener('DOMContentLoaded', () => {
-  const el = document.body.appendChild(document.createElement('hello'))
+// document.addEventListener('DOMContentLoaded', () => {
+//   const app = new Vue({
+//     el: '#component-actions',
+//     render: h => h(App)
+//   })
+
+//   console.log(app)
+// })
+
+$.get('/application'+location.search, (dat)=> {
+  console.log(2, dat)
+  
+  // TODO: 消す
+  window.dat = dat
+  
+  initializeApp(dat)
+
   const app = new Vue({
-    el,
+    el: '#component-actions',
     render: h => h(App)
   })
 

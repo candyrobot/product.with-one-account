@@ -52,5 +52,15 @@
       }, true);
     }
 
+    location.getParameter = function(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      if(results === null)
+        return undefined;
+      return JSON.parse(decodeURIComponent( results[1].replace(/\+/g,' ') ));
+    }
+
+    location.searchPresent = function(str) { return this.search.indexOf(str) != -1 };
   </script>
 </html>
