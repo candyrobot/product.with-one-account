@@ -6,12 +6,12 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 import Vue from 'vue'
-import App from '../app.vue'
+import appActions from '../component/appActions.vue'
 
 // document.addEventListener('DOMContentLoaded', () => {
 //   const app = new Vue({
 //     el: '#component-actions',
-//     render: h => h(App)
+//     render: h => h(appActions)
 //   })
 
 //   console.log(app)
@@ -27,7 +27,7 @@ $.get('/application'+location.search, (dat)=> {
 
   const app = new Vue({
     el: '#component-actions',
-    render: h => h(App)
+    render: h => h(appActions)
   })
 
   console.log(app)
