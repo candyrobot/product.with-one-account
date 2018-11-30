@@ -7,6 +7,7 @@
 
 import Vue from 'vue'
 import appActions from '../component/appActions.vue'
+import toggle from '../component/toggle.vue'
 
 // document.addEventListener('DOMContentLoaded', () => {
 //   const app = new Vue({
@@ -18,6 +19,7 @@ import appActions from '../component/appActions.vue'
 // })
 
 $.get('/application'+location.search, (dat)=> {
+  console.log(1, appActions)
   console.log(2, dat)
   
   // TODO: 消す
