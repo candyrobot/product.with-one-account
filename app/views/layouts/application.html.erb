@@ -15,11 +15,16 @@
     <link rel="apple-touch-icon" href="/icons/icon-192x192.png" sizes="192x192"/>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    
+    <!-- INFO: for Vue.js -->
+    <%= stylesheet_pack_tag 'hello_vue' %>
+
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
   <body>
     <%= yield %>
+    <%= javascript_pack_tag 'hello_vue' %>
   </body>
   <script>
 
