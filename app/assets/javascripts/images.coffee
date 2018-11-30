@@ -167,7 +167,7 @@ renderImages = ()->
 			style="background-image: url(#{dat.url})">
 			</a>
 			#{s}
-			<div class="favoriteNum">#{dat.favorite}</div>
+			<div class="favoriteNum">#{if dat.favorite then dat.favorite else ''}</div>
 		</div>
 		""";
 	, ""
