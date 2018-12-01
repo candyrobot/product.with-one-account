@@ -2,41 +2,56 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-window.initializeApp = (dat)->
-	if dat.session.userID
-	else
-		$('.component-images-horizontal').on 'click', 'a', ->
-			toast 'ログインすると見れます。　最高のエロ画像を探そう!🌟'
-			return false
+window.initializeApp = ->
+	$.get('/application'+location.search, (dat)->
+		console.log(dat)
+		window.dat = dat
+		if dat.session.userID
+			$('#component-actions .login').hide()
+			$('#component-actions .signup').hide()
+		else
+			$('#component-actions .mypage').hide()
+			$('#component-actions .favorite').hide()
+			$('.component-images-horizontal').on 'click', 'a', ->
+				toast 'ログインすると見れます。　最高のエロ画像を探そう!🌟'
+				return false
 
-	if location.search.indexOf('imageID') != -1
-		renderImage(dat.images[0])
-		imageID = dat.images[0].id
-		b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
-		$('.row').html("""
-		""" + (if countUp('x') > 3 then "" else """
-		<div class="balloon">
-			タップして "お気入り" に入れると…　👉
-		</div>""") + """
-		<div class="fav-area" onclick="$(this).prev().hide()">#{getHtmlFav(b)}</div>
-		""")
-		.find('.component-fav').on 'click', ()->
-			startLoading()
-			if $(this).is('.true')
-				deleteFav(imageID)
-				.done => $(this).removeClass('true')
-			else
-				$.post('/favorites', { imageID: imageID })
-				.fail (dat)-> toast(dat.responseJSON.toast)
-				.done => $(this).addClass('true')
-			$.get('/images/list', { related: true, imageID: imageID })
-			.done renderRecommendation
-			.always -> stopLoading()
-	else
-		renderImages()
+		if location.search.indexOf('imageID') != -1
+			renderImage(dat.images[0])
+			imageID = dat.images[0].id
+			b = !!window.dat.favorites.filter((fav)-> imageID == parseInt fav.imageID ).length
+			$('.row').html("""
+			""" + (if countUp('x') > 3 then "" else """
+			<div class="balloon">
+				タップして "お気入り" に入れると…　👉
+			</div>""") + """
+			<div class="fav-area" onclick="$(this).prev().hide()">#{getHtmlFav(b)}</div>
+			""")
+			.find('.component-fav').on 'click', ()->
+				startLoading()
+				if $(this).is('.true')
+					deleteFav(imageID)
+					.done => $(this).removeClass('true')
+				else
+					$.post('/favorites', { imageID: imageID })
+					.fail (dat)-> toast(dat.responseJSON.toast)
+					.done => $(this).addClass('true')
+				$.get('/images/list', { related: true, imageID: imageID })
+				.done renderRecommendation
+				.always -> stopLoading()
+		else if location.search.indexOf('most') != -1
+			$('#component-actions .most').hide()
+			renderImages()
+		else if location.search.indexOf('favorite') != -1
+			$('#component-actions .favorite').hide()
+			renderImages()
+		else
+			$('#component-actions .newPosts').hide()
+			renderImages()
 
-	$('#component-logout h1').text(window.dat.session.userID)
-	$('#component-logout h5').text(window.dat.session.email)
+		$('#component-logout h1').text(window.dat.session.userID)
+		$('#component-logout h5').text(window.dat.session.email)
+	)
 
 deleteFav = (imageID)->
 	$.ajax({

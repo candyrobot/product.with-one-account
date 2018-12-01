@@ -281,6 +281,24 @@ input, button {
   }
 }
 
+#component-actions {
+  padding: 10px;
+  background-color: rgba(28, 161, 242, .8);
+  text-align: right;
+  > a {
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 3px;
+    border: none;
+    background-color: #70c9ff;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    line-height: 35px;
+    text-decoration: none;
+  }
+}
+
 .component-fav {
   color: #888;
   text-align: center;
