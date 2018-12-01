@@ -3,8 +3,7 @@ const path = require('path')
 module.exports = {
   entry: { app: './src/index.js' },
   output: {
-    // path: '/app/assets/javascripts/webpack',
-    path: path.join(__dirname, "../app/assets/javascripts/webpack/"),
+    path: path.join(__dirname, "../app/assets/javascripts/webpack"),
     filename: 'app.js',
   },
   module: {
@@ -18,9 +17,6 @@ module.exports = {
             presets: ['@babel/env', '@babel/react'], // env presetでES2015から変換、react presetでReactのJSX文法を変換
           }
         }
-        // query: {
-        //   presets: ['es2015', 'react'],
-        // },
       },
       {
           test: /\.svg$/,
@@ -28,7 +24,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader?modules']
+        use: ['style-loader', 'css-loader']
       }
     ]
   },
