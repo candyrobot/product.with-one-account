@@ -7,6 +7,7 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
+
       gtag('config', 'UA-76521620-4');
     </script>
 
@@ -24,6 +25,10 @@
     <link rel="apple-touch-icon" href="/icons/icon-192x192.png" sizes="192x192"/>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    
+    <!-- INFO: for Vue.js -->
+    <%= stylesheet_pack_tag 'vue' %>
+
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
@@ -31,6 +36,7 @@
     <div id="root"></div>
     <%= javascript_include_tag "webpack/app" %>
     <%= yield %>
+    <%= javascript_pack_tag 'vue' %>
   </body>
   <script>
 
@@ -58,5 +64,15 @@
       }, true);
     }
 
+    location.getParameter = function(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      if(results === null)
+        return undefined;
+      return JSON.parse(decodeURIComponent( results[1].replace(/\+/g,' ') ));
+    }
+
+    location.searchPresent = function(str) { return this.search.indexOf(str) != -1 };
   </script>
 </html>
