@@ -119,11 +119,14 @@ Array.prototype.serialize = ()->
 
 getHtmlFav = (isTrue)->
 	"""
-	<div class="component-fav #{isTrue}">
-		<span>♡</span>
-		<span>♥</span>
-	</div>
+	<toggle></toggle>
 	"""
+
+	# <div class="component-fav #{isTrue}">
+	# 	<span>♡</span>
+	# 	<span>♥</span>
+	# </div>
+
 
 renderImages = ()->
 	j = 0

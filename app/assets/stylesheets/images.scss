@@ -281,25 +281,25 @@ input, button {
   }
 }
 
-.component-fav {
-  color: #888;
-  text-align: center;
-  border-radius: 100%;
-  span:nth-child(2) {
-    display: none;
-  }
-  &.true {
-    color: #ff7878;
-    span:nth-child(1) {
-      display: none;
-    }
-    span:nth-child(2) {
-      display: block;
-    }
-  }
-}
+// .component-fav {
+//   color: #888;
+//   text-align: center;
+//   border-radius: 100%;
+//   span:nth-child(2) {
+//     display: none;
+//   }
+//   &.true {
+//     color: #ff7878;
+//     span:nth-child(1) {
+//       display: none;
+//     }
+//     span:nth-child(2) {
+//       display: block;
+//     }
+//   }
+// }
 
-.layer-2 .component-fav {
+.layer-2 .component-fav > div{
   margin: 0 10px 10px auto;
   width: 55px;
   height: 55px;
