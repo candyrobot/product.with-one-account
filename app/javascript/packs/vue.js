@@ -6,30 +6,32 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 import Vue from 'vue'
-import appActions from '../component/appActions.vue'
-import toggle from '../component/toggle.vue'
+import AppActions from '../component/AppActions.vue'
+import Toggle from '../component/Toggle.vue'
 
 // document.addEventListener('DOMContentLoaded', () => {
 //   const app = new Vue({
 //     el: '#component-actions',
-//     render: h => h(appActions)
+//     render: h => h(AppActions)
 //   })
 
 //   console.log(app)
 // })
 
+Vue.component('app-actions', AppActions);
+Vue.component('toggle', Toggle);
+
 $.get('/application'+location.search, (dat)=> {
-  console.log(1, appActions)
   console.log(2, dat)
-  
+
   // TODO: 消す
   window.dat = dat
-  
+
   initializeApp(dat)
 
   const app = new Vue({
-    el: '#component-actions',
-    render: h => h(appActions)
+    el: '#app',
+    // render: h => h(AppActions)
   })
 
   console.log(app)
