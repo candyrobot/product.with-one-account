@@ -17,8 +17,9 @@ module WithOneAccount
       allow do
         origins '*'
         resource '*',
-        	headers: :any,
-        	methods: [:get, :post, :put, :patch, :delete, :options, :head]
+          headers: :any,
+	      methods: [:get, :post, :put, :patch, :delete, :options, :head],
+	      expose: ['Per-Page', 'Total', 'Link']
       end
     end
   end
