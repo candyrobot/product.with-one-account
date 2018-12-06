@@ -1,6 +1,9 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception
-  # protect_from_forgery with: :null_session
+  # Prevent CSRF attacks by raising an exception.
+  # For APIs, you may want to use :null_session instead.
+  # protect_from_forgery with: :exception
+  protect_from_forgery with: :null_session
+  # protect_from_forgery except: ["create", "login"]
 
   @@toastNotLogin = 'ログインしていません'
   @@toastEmpty = '入力値が空です'
@@ -23,31 +26,40 @@ class ApplicationController < ActionController::Base
       }.reverse.map {|image|
         hImage = image.attributes
         logger.debug hImage
-        hImage["favorite"] = Favorite.where(imageID: image.id).length
+        hImage['favorite'] = Favorite.where(imageID: image.id).length
         hImage
       }
     else
       images = Image.all.reverse_order
     end
 
+    user = User.where(token: request.headers['X-CSRF-Token'])[0]
+
     render json: {
       images: images,
       favorites: Favorite.where(userID: session[:user_id]),
-      session: {
-        userID: session[:user_id],
-        email: session[:user_id] && User.find(session[:user_id]).email
-      }
+      session: user.present? && excludeFromUser(user)
     }
   end
 
-  def isValidFileType(url)
-    url.include?('.jpg') ||
-    url.include?('.jpeg') ||
-    url.include?('.png') ||
-    url.include?('.gif') ||
-    url.include?('.JPG') ||
-    url.include?('.JPEG') ||
-    url.include?('.PNG') ||
-    url.include?('.GIF')
+  protected
+
+  def excludeFromUser(user)
+    sessionUser = user.attributes
+    sessionUser.delete('password')
+    return sessionUser
   end
+
+  private
+
+  # def isValidFileType(url)
+  #   url.include?('.jpg') ||
+  #   url.include?('.jpeg') ||
+  #   url.include?('.png') ||
+  #   url.include?('.gif') ||
+  #   url.include?('.JPG') ||
+  #   url.include?('.JPEG') ||
+  #   url.include?('.PNG') ||
+  #   url.include?('.GIF')
+  # end
 end
