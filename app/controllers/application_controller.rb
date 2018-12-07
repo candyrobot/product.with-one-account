@@ -14,30 +14,11 @@ class ApplicationController < ActionController::Base
   def index
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> app"
 
-    if params.key?(:imageID)
-      images = Image.where(id: params[:imageID])
-    elsif params.key?(:favorite) && session[:user_id]
-      images = Image.all.reverse_order.select {|image|
-        Favorite.where(imageID: image.id, userID: session[:user_id]).present?
-      }
-    elsif params.key?(:most)
-      images = Image.all.sort_by {|image|
-        Favorite.where(imageID: image.id).length
-      }.reverse.map {|image|
-        hImage = image.attributes
-        logger.debug hImage
-        hImage['favorite'] = Favorite.where(imageID: image.id).length
-        hImage
-      }
-    else
-      images = Image.all.reverse_order
-    end
-
     user = User.where(token: request.headers['X-CSRF-Token'])[0]
 
     render json: {
-      images: images,
-      favorites: Favorite.where(userID: session[:user_id]),
+      images: Image.all.reverse_order,
+      favorites: Favorite.all.reverse_order,
       session: user.present? && excludeFromUser(user)
     }
   end
