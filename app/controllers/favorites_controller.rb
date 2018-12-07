@@ -1,22 +1,26 @@
 class FavoritesController < ApplicationController
   def create
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> fav"
-    return render json: { toast: @@toastNotLogin }, status: :unauthorized if session[:user_id].blank?
-    return render json: { toast: @@toastDuplicates }, status: :bad_request if Favorite.where(imageID: params[:imageID], userID: session[:user_id]).present?
+    user = User.where(token: request.headers['X-CSRF-Token'])[0]
 
-    favorite = Favorite.new({imageID: params[:imageID], userID: session[:user_id] })
+    return render json: { toast: @@toastNotLogin }, status: :unauthorized if user.blank?
+    return render json: { toast: @@toastDuplicates }, status: :bad_request if Favorite.where(imageID: params[:imageID], userID: user.id).present?
+
+    favorite = Favorite.new({imageID: params[:imageID], userID: user.id })
     favorite.save
   end
 
   def list
-    render json: (Favorite.where userID: session[:user_id])
+    render json: (Favorite.where userID: user.id)
   end
 
   def destroy
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> del"
-    return render json: { toast: @@toastNotLogin }, status: :unauthorized if session[:user_id].blank?
+    user = User.where(token: request.headers['X-CSRF-Token'])[0]
 
-    favorites = Favorite.where imageID: params[:imageID], userID: session[:user_id]
+    return render json: { toast: @@toastNotLogin }, status: :unauthorized if user.blank?
+
+    favorites = Favorite.where imageID: params[:imageID], userID: user.id
     favorites[0].destroy
   end
 end
