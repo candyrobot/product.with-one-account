@@ -24,8 +24,7 @@ class UsersController < ApplicationController
 
   def logout
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> logout"
-    session[:user_id] = nil
-    logger.debug session[:user_id]
+    # INFO: no more logout system from server-side. 
   end
 
 end
