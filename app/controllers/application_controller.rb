@@ -14,12 +14,21 @@ class ApplicationController < ActionController::Base
   def index
     logger.debug ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> app"
 
-    user = User.where(token: request.headers['X-CSRF-Token'])[0]
+    me = User.where(token: request.headers['X-CSRF-Token'])[0]
+
+    users = User.all.reverse_order.map{|user|
+      u = user.attributes
+      u.delete('email')
+      u.delete('password')
+      u.delete('token')
+      u
+    }
 
     render json: {
       images: Image.all.reverse_order,
+      users: users,
       favorites: Favorite.all.reverse_order,
-      session: user.present? && excludeFromUser(user)
+      session: me.present? && excludeFromUser(me)
     }
   end
 
