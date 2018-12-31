@@ -8,6 +8,8 @@ class FavoritesController < ApplicationController
 
     favorite = Favorite.new({imageID: params[:imageID], userID: user.id })
     favorite.save
+
+    render json: [favorite]
   end
 
   def list

@@ -19,6 +19,8 @@ class ImagesController < ApplicationController
 
     image = Image.new({url: params[:url] })
     image.save
+
+    render json: [image]
   end
 
 end
